@@ -1,7 +1,4 @@
-
-
 import 'package:flutter/material.dart';
-
 
 class SplashPage extends StatelessWidget {
   int duration = 0;
@@ -11,9 +8,9 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration(seconds: this.duration), () {
+    Future.delayed(Duration(seconds: duration), () {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => this.goToPage));
+          context, MaterialPageRoute(builder: (context) => goToPage));
     });
 
     return Scaffold(
@@ -23,8 +20,6 @@ class SplashPage extends StatelessWidget {
           alignment: Alignment.center,
           child: const Image(
             image: AssetImage('assets/images/logo.png'),
-
-
           ),
         ),
       ),

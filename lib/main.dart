@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lostcard/view/splash_screen/splash_page.dart';
-import 'package:lostcard/view/onboarding_screens/welcome_page.dart';
+import 'package:lostcard/view/onboarding_screens/onboarding_page_searching.dart';
 
 
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: SplashPage(duration: 10, goToPage: WelcomePage())
+        home: SplashPage(duration: 10, goToPage: OnboardingPageSearching())
 
     );
   }
