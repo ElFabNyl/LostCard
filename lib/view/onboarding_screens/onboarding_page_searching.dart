@@ -8,15 +8,12 @@ class OnboardingPageSearching extends StatelessWidget {
     return Scaffold(
         body: SafeArea(
       child: Container(
-        margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            const Align(
-              alignment: Alignment.bottomRight,
-              child: SizedBox(
+        margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const Align(
+                alignment: Alignment.bottomRight,
                 child: Text(
                   "Skip",
                   style: TextStyle(
@@ -25,12 +22,10 @@ class OnboardingPageSearching extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 140,
-            ),
-            const SizedBox(
-              child: Text(
+              const SizedBox(
+                height: 140,
+              ),
+              const Text(
                 "Easy way of searching your lost documents in Cameroon",
                 style: TextStyle(
                   fontSize: 20,
@@ -39,13 +34,11 @@ class OnboardingPageSearching extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            const SizedBox(
-              child: Text(
-                "Search your document amount thousands of registered ones",
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
+                "Search your document among thousands of registered ones",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -53,31 +46,36 @@ class OnboardingPageSearching extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            const Align(
-              alignment: Alignment.bottomRight,
-              child: SizedBox(
+              const SizedBox(
+                height: 40,
+              ),
+              const Align(
+                alignment: Alignment.bottomRight,
                 child: Image(
                   image: AssetImage('assets/images/file_searching.png'),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            CustomizedTextButton(
-              text: 'Next',
-              widget: OnboardingPageRegisteringSignaling(),
-              buttonWidth: 132,
-              buttonHeight: 39,
-              borderType: 'border',
-              textColor: Colors.white,
-              textFontSize: 18,
-            ),
-          ],
+              const SizedBox(
+                height: 20,
+              ),
+              CustomizedTextButton(
+                text: 'Next',
+                buttonWidth: 132,
+                buttonHeight: 39,
+                border: 'border',
+                textColor: Colors.white,
+                textFontSize: 18,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            OnboardingPageRegisteringSignaling()),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     ));

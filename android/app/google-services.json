@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1074996669357",
+    "project_id": "lostcard-9aed4",
+    "storage_bucket": "lostcard-9aed4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074996669357:android:f377908364392a7a018f24",
+        "android_client_info": {
+          "package_name": "com.example.lostcard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1074996669357-6ng6273e6ga2b1ttdpgktvq96k9uok7c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lostcard",
+            "certificate_hash": "468bca75622e82a0e470a7f704eba9d664042f00"
+          }
+        },
+        {
+          "client_id": "1074996669357-86o3a2ii43giqtmo6rtpcarfcj62g5cp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLeGT1AMgpoJqMmqRrWRN_AXgwCQdYE-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1074996669357-86o3a2ii43giqtmo6rtpcarfcj62g5cp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

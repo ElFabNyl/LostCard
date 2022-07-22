@@ -1,26 +1,33 @@
 import 'package:flutter/material.dart';
 
 class CustomizedTextButton extends StatelessWidget {
-  String text = "";
-  Widget widget;
+  CustomizedTextButton({
+    Key? key,
+    required this.text,
+    required this.buttonWidth,
+    required this.buttonHeight,
+    required this.border,
+    required this.textColor,
+    required this.textFontSize,
+    this.onPressed,
+    this.textAlignment,
+  }) : super(key: key);
+
+  String text;
+
+
   double buttonWidth;
   double buttonHeight;
-  String borderType;
+  String border;
   Color textColor;
   double textFontSize;
+  TextAlign? textAlignment = TextAlign.end;
 
-  CustomizedTextButton(
-      {required this.text,
-      required this.widget,
-      required this.buttonWidth,
-      required this.buttonHeight,
-      required this.borderType,
-      required this.textColor,
-      required this.textFontSize});
+  void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    switch (borderType) {
+    switch (border) {
       case "border":
         {
           return (SizedBox(
@@ -29,7 +36,11 @@ class CustomizedTextButton extends StatelessWidget {
             child: TextButton(
               child: Text(
                 text,
-                style: TextStyle(fontSize: textFontSize, color: textColor),
+                textAlign: textAlignment,
+                style: TextStyle(
+                  fontSize: textFontSize,
+                  color: textColor,
+                ),
               ),
               style: ButtonStyle(
                   backgroundColor:
@@ -41,12 +52,7 @@ class CustomizedTextButton extends StatelessWidget {
                           color: Color(0xFF082E02),
                         )),
                   )),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => widget),
-                );
-              },
+              onPressed: onPressed,
             ),
           ));
         }
@@ -60,15 +66,10 @@ class CustomizedTextButton extends StatelessWidget {
             child: TextButton(
               child: Text(
                 text,
-                style: TextStyle(fontSize: 18.0, color: textColor),
+                style: TextStyle(fontSize: textFontSize, color: textColor),
               ),
               style: const ButtonStyle(),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => widget),
-                );
-              },
+              onPressed: onPressed,
             ),
           ));
         }
