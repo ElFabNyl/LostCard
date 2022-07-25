@@ -179,6 +179,7 @@ class SignupState extends State<Signup> {
                   border: 'border',
                   textColor: Colors.white,
                   textFontSize: 18,
+                    backgroundColor: CustomColor().IconsColor,
                   onPressed: () async {
                     if (emailController.value.text.isNotEmpty &&
                         passwordController.value.text.isNotEmpty &&
@@ -240,6 +241,7 @@ class SignupState extends State<Signup> {
                           border: 'noBorder',
                           textColor: const Color(0xFF012405),
                           textFontSize: 16,
+                            backgroundColor: CustomColor().IconsColor,
                         ),
                         const Align(
                           alignment: Alignment.centerRight,

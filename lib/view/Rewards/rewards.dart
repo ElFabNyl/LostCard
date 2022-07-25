@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:lostcard/constant/custom_color.dart';
+import 'package:lostcard/view/Rewards/get_rewards.dart';
+import 'package:lostcard/view/Rewards/rewards_history.dart';
 
 
 class Rewards extends StatefulWidget {
@@ -36,41 +38,34 @@ class RewardsState extends State<Rewards> {
   @override
   Widget build(BuildContext context) {
 
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+        appBar: AppBar(
+          leading: new Container(),
+          backgroundColor: Colors.white,
+
+        bottom:  const TabBar(
+          labelColor: Color(0xFF023607),
+        indicatorColor: Color(0xFF023607),
+        labelStyle: TextStyle(fontWeight:FontWeight.bold, fontSize: 22),
 
 
-    return Container(
-          color: Colors.white,
-          margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-          child: SingleChildScrollView(
-            child: Column(
-              children:  [
-                const Align(
-                  alignment: Alignment.center,
-                  child: Image(
-                    image:
-                    AssetImage('assets/images/cameroon_flag.png'),
-                  ),
-                ),
-                Text(
-                  "L O S T  C A R D",
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: CustomColor().IconsColor,
-
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: 68,
-                ),
+        tabs: [
+    Tab(text: 'Get Rewards',),
+    Tab(text: 'Rewards History'),
+    ],
+    ),
+    ),
+    body:  TabBarView(
+    children: [
+      GetRewards(),
+    RewardsHistory(),
 
 
+    ],
+    ),));
 
-              ],
-            ),
-          ),
-                );
     throw UnimplementedError();
   }
 }

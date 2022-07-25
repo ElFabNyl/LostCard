@@ -2,6 +2,8 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lostcard/view/profile/profile.dart';
+import 'package:lostcard/view/reusable_widgets/add_lost_or_found_card_dialog.dart';
 
 import '../../constant/custom_color.dart';
 import '../Rewards/rewards.dart';
@@ -69,7 +71,12 @@ class NavBarPagesManagerState extends State<NavBarPagesManager>{
         width: 50.0,
         fit:BoxFit.cover)),
     tooltip: 'Profile',
-    onPressed: () {},
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Profile(numberOfDocumentsFound: '12')),
+      );
+    },
     ), //IconButton
     ], //<Widget>[]
     backgroundColor: Colors.white,
@@ -127,7 +134,16 @@ class NavBarPagesManagerState extends State<NavBarPagesManager>{
     width:70,
     height: 70,
     child: FloatingActionButton.large(
-    onPressed: () {},
+    onPressed: () {
+      showDialog(context: context,
+          builder: (BuildContext context){
+            return AddLostFoundCardDialog();
+          }
+      );
+
+
+
+    },
     child: const Icon(FontAwesomeIcons.plus),
     backgroundColor: CustomColor().IconsColor
     ,
@@ -135,6 +151,10 @@ class NavBarPagesManagerState extends State<NavBarPagesManager>{
     ),
     ),
     //floatingActionButtonLocation:    FloatingActionButtonLocation.startFloat,
+
+
+
+
 
     bottomNavigationBar: BottomNavigationBar(
     backgroundColor: CustomColor().IconsColor,

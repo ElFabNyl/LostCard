@@ -189,6 +189,7 @@ class SigninState extends State<Signin> {
                     border: 'noBorder',
                     textColor: const Color(0xFF133E04),
                     textFontSize: 16,
+                    backgroundColor: CustomColor().IconsColor,
                     textAlignment: TextAlign.end,
                     onPressed: (){
 
@@ -211,6 +212,7 @@ class SigninState extends State<Signin> {
                 border: 'border',
                 textColor: Colors.white,
                 textFontSize: 18,
+                  backgroundColor: CustomColor().IconsColor,
                 onPressed: () async {
                   if (emailController.value.text.isNotEmpty &&
                       passwordController.value.text.isNotEmpty &&
@@ -410,6 +412,7 @@ class SigninState extends State<Signin> {
                       buttonWidth: 100,
                       buttonHeight: 40,
                       border: 'noBorder',
+                        backgroundColor: CustomColor().IconsColor,
                       textColor: const Color(0xFF133E04),
                       textFontSize: 14,
                       onPressed: (){

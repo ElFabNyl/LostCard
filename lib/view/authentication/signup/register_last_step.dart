@@ -6,6 +6,7 @@ import 'package:lostcard/view/reusable_widgets/customized_text_field.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../constant/custom_color.dart';
 import '../../reusable_widgets/loading_indicator.dart';
 
 class RegisterLastStep extends StatefulWidget {
@@ -42,6 +43,14 @@ class RegisterLastStepState extends State<RegisterLastStep>{
       },
       verificationFailed: (FirebaseAuthException e) async {
         print (e.message);
+        print('OTP code not valid!');
+
+        const snackBar = SnackBar(
+          content: Text('OTP code not valid!'),
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
       },
       codeSent: (String verificationId, int? resendToken)async {
 
@@ -61,7 +70,7 @@ class RegisterLastStepState extends State<RegisterLastStep>{
            Navigator.push(
              context,
              MaterialPageRoute(
-                 builder: (context) =>  OtpVerificationSignup(verificationId: verificationCode, email: email,password: password,)),
+                 builder: (context) =>  OtpVerificationSignup(verificationId: verificationCode, email: email,password: password,phoneNumber: enterPhoneNumberController.value.text,)),
 
            );
          }
@@ -213,28 +222,13 @@ class RegisterLastStepState extends State<RegisterLastStep>{
                     border: 'border',
                     textColor: Colors.white,
                     textFontSize: 18,
+                      backgroundColor: CustomColor().IconsColor,
                     onPressed: ()  async {
 
                       LoadingIndicator(this.context).startLoading();
 
 
                         await verifyPhone(enterPhoneNumberController.value.text);
-                         //print('Realllllllllllllllllllllly'+code);
-
-
-
-                      // if(code!=null)
-                      //  {
-                      //
-                      //
-                      //    Navigator.push(
-                      //      context,
-                      //      MaterialPageRoute(
-                      //          builder: (context) =>  OtpVerificationSignup(verificationId: code, email: email,password: password,)),
-                      //
-                      //    );
-                      //  }
-
 
                       print(this.email);
                       print(this.password);

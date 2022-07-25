@@ -15,27 +15,31 @@ class OtpVerificationSignup extends StatefulWidget {
   final String verificationId;
   final String email;
   final String password;
+  final String phoneNumber;
 
   const OtpVerificationSignup({
     required this.verificationId,
     required this.email,
     required this.password,
+    required this.phoneNumber,
     Key? key
   }) : super(key: key);
 
   @override
-  OtpVerificationSignupState createState() => OtpVerificationSignupState(verificationId:verificationId, email:email, password:password);
+  OtpVerificationSignupState createState() => OtpVerificationSignupState(verificationId:verificationId, email:email, password:password, phoneNumber:phoneNumber);
 }
 
 class OtpVerificationSignupState extends State<OtpVerificationSignup> {
   final String verificationId;
   final String email;
   final String password;
+  final String phoneNumber;
 
   OtpVerificationSignupState({
     required this.verificationId,
     required this.email,
-    required this.password
+    required this.password,
+    required this.phoneNumber,
 
 });
 
@@ -44,7 +48,7 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
 
 
 
-  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 120;
+  int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60;
 
   //CountdownTimerController timerController = CountdownTimerController(endTime: DateTime.now().millisecondsSinceEpoch + 1000 * 120);
 
@@ -168,6 +172,15 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
                         border: 'noBorder',
                         textColor: const Color(0xFF133E04),
                         textFontSize: 14,
+                          backgroundColor: CustomColor().IconsColor,
+                        onPressed: () async{
+
+                          LoadingIndicator(this.context).startLoading();
+
+
+                          await RegisterLastStepState(email: email,password: password).verifyPhone(phoneNumber);
+
+                        },
                       ),
                     ),
                   ],
@@ -183,6 +196,7 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
                 border: 'border',
                 textColor: Colors.white,
                 textFontSize: 18,
+                  backgroundColor: CustomColor().IconsColor,
                 onPressed: () async {
 
                   await PhoneOTPVerification(FirebaseAuth.instance).verifyOTP( verificationId, enterCodeController.value.text, email,password, this.context);

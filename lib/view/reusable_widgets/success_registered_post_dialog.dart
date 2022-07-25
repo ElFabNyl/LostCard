@@ -3,22 +3,19 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lostcard/constant/custom_color.dart';
+import 'package:lostcard/view/nav_bar_pages_manager/bottom_nav_bar_pages_manager.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 
-class GetNumberNotificationDialog extends StatefulWidget{
-  void Function(bool?)? onChanged;
-
-  GetNumberNotificationDialog({
-    this.onChanged,
-  });
 
 
+class SuccessRegisteredPostDialog extends StatelessWidget{
+  String textMessage;
 
+  SuccessRegisteredPostDialog({Key? key,
+    required this.textMessage
 
-  GetNumberNotificationDialogState createState()=> GetNumberNotificationDialogState();
-}
+}) : super(key: key);
 
-class GetNumberNotificationDialogState extends State<GetNumberNotificationDialog>{
   @override
   Widget build(BuildContext context) {
 
@@ -50,32 +47,39 @@ class GetNumberNotificationDialogState extends State<GetNumberNotificationDialog
                 ),
               ),
 
-              const SizedBox(height: 40,),
+              const SizedBox(height: 10,),
 
               Flexible(
-                child: RichText(
-                  text:  TextSpan(
-                    text: '(+237) 693 306 986 ', style: TextStyle(color: CustomColor().IconsColor,fontWeight: FontWeight.bold, fontSize: 24),
-                  ),
-                  overflow: TextOverflow.clip,
-                ),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text:  TextSpan(
+                        text: textMessage, style: const TextStyle(color: Colors.black,fontWeight: FontWeight.normal, fontSize: 18, ),
+
+                      ),
+                      overflow: TextOverflow.clip,
+                    ),
               ),
 
-              const SizedBox(height: 40,),
+              const SizedBox(height: 10,),
 
               Align(
                 alignment: Alignment.bottomRight,
                 child: CustomizedTextButton(
-                    text: '              ok',
-                    buttonWidth: 132,
-                    buttonHeight: 39,
-                    border: "noBorder",
-                    textColor: CustomColor().IconsColor,
-                    textFontSize: 16,
+                  text: '              ok',
+                  buttonWidth: 132,
+                  buttonHeight: 39,
+                  border: "noBorder",
+                  textColor: CustomColor().IconsColor,
+                  textFontSize: 16,
                   backgroundColor: CustomColor().IconsColor,
 
                   onPressed: (){
                     Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NavBarPagesManager(selectedIndex: 1,)),
+                    );
                   },
                   //onPressed: Navigator. of(context). pop(GetNumberNotificationDialog()),
                   // onPressed: Navigator.(GetNumberNotificationDialog(), true),

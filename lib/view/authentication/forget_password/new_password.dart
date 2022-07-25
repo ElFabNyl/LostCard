@@ -85,6 +85,7 @@ class NewPasswordState extends State<NewPassword> {
                 border: 'border',
                 textColor: Colors.white,
                 textFontSize: 18,
+                  backgroundColor: CustomColor().IconsColor,
               ),
             ],
           ),

@@ -87,6 +87,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
                 border: 'border',
                 textColor: Colors.white,
                 textFontSize: 18,
+                  backgroundColor: CustomColor().IconsColor,
                 onPressed: (){
 
                   Navigator.push(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lostcard/view/onboarding_screens/onboarding_page_registering_signaling.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 
+import '../../constant/custom_color.dart';
+
 class OnboardingPageSearching extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -65,6 +67,7 @@ class OnboardingPageSearching extends StatelessWidget {
                 border: 'border',
                 textColor: Colors.white,
                 textFontSize: 18,
+                  backgroundColor: CustomColor().IconsColor,
                 onPressed: () {
                   Navigator.push(
                     context,

@@ -5,20 +5,21 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lostcard/constant/custom_color.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 
-class GetNumberNotificationDialog extends StatefulWidget{
-  void Function(bool?)? onChanged;
+class RewardStatementDialog extends StatefulWidget{
+   String amount;
 
-  GetNumberNotificationDialog({
-    this.onChanged,
+  RewardStatementDialog({
+
+    required this.amount,
   });
 
 
 
 
-  GetNumberNotificationDialogState createState()=> GetNumberNotificationDialogState();
+  RewardStatementDialogState createState()=> RewardStatementDialogState();
 }
 
-class GetNumberNotificationDialogState extends State<GetNumberNotificationDialog>{
+class RewardStatementDialogState extends State<RewardStatementDialog>{
   @override
   Widget build(BuildContext context) {
 
@@ -50,15 +51,16 @@ class GetNumberNotificationDialogState extends State<GetNumberNotificationDialog
                 ),
               ),
 
-              const SizedBox(height: 40,),
+              const SizedBox(height: 20,),
 
               Flexible(
-                child: RichText(
-                  text:  TextSpan(
-                    text: '(+237) 693 306 986 ', style: TextStyle(color: CustomColor().IconsColor,fontWeight: FontWeight.bold, fontSize: 24),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text:  TextSpan(
+                      text: 'A deposit of '+widget.amount+' Fcfa has been made in your account ', style: TextStyle(color: CustomColor().IconsColor,fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    overflow: TextOverflow.clip,
                   ),
-                  overflow: TextOverflow.clip,
-                ),
               ),
 
               const SizedBox(height: 40,),
@@ -66,12 +68,12 @@ class GetNumberNotificationDialogState extends State<GetNumberNotificationDialog
               Align(
                 alignment: Alignment.bottomRight,
                 child: CustomizedTextButton(
-                    text: '              ok',
-                    buttonWidth: 132,
-                    buttonHeight: 39,
-                    border: "noBorder",
-                    textColor: CustomColor().IconsColor,
-                    textFontSize: 16,
+                  text: '              ok',
+                  buttonWidth: 132,
+                  buttonHeight: 39,
+                  border: "noBorder",
+                  textColor: CustomColor().IconsColor,
+                  textFontSize: 16,
                   backgroundColor: CustomColor().IconsColor,
 
                   onPressed: (){

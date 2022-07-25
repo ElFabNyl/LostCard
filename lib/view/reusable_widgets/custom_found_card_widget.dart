@@ -6,15 +6,15 @@ import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 
 import 'custom_found_notification_dialog.dart';
 
-class CustomCard extends StatefulWidget {
+class CustomFoundCard extends StatefulWidget {
   void Function()? onPressed;
 
-  CustomCard({Key? key, this.onPressed}) : super(key: key);
+  CustomFoundCard({Key? key, this.onPressed}) : super(key: key);
 
-  CustomCardState createState() => CustomCardState();
+  CustomFoundCardState createState() => CustomFoundCardState();
 }
 
-class CustomCardState extends State<CustomCard> {
+class CustomFoundCardState extends State<CustomFoundCard> {
   @override
   Widget build(BuildContext context) {
     return (SizedBox(
@@ -141,6 +141,7 @@ class CustomCardState extends State<CustomCard> {
                           border: 'noBorder',
                           textColor: Colors.red,
                           textFontSize: 16,
+                          backgroundColor: CustomColor().IconsColor,
                           onPressed: (){
                             showDialog(context: context,
                                 builder: (BuildContext context){

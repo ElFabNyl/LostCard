@@ -1,7 +1,8 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:lostcard/view/reusable_widgets/custom_card_widget.dart';
+import 'package:lostcard/view/reusable_widgets/custom_found_card_widget.dart';
+import '../reusable_widgets/custom_lost_card_widget.dart';
 import '../reusable_widgets/customized_search_field.dart';
 
 class SearchResult extends StatefulWidget {
@@ -39,7 +40,7 @@ class SearchResultState extends State<SearchResult> {
                       height: 20,
                     ),
 
-                    CustomCard(),
+                    CustomFoundCard(),
 
 
 
@@ -48,14 +49,14 @@ class SearchResultState extends State<SearchResult> {
                     ),
 
 
-                    CustomCard(),
+                    CustomFoundCard(),
 
                     const SizedBox(
                       height: 20,
                     ),
 
 
-                    CustomCard(),
+                    CustomLostCard(),
 
 
                   ],

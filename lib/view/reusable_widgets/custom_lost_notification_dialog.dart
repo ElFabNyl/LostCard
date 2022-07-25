@@ -5,14 +5,14 @@ import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 
 import 'get_number_notification_dialog.dart';
 
-class FoundNotificationDialog extends StatefulWidget {
+class LostNotificationDialog extends StatefulWidget {
 
 
 
-  FoundNotificationDialogState createState() => FoundNotificationDialogState();
+  LostNotificationDialogState createState() => LostNotificationDialogState();
 }
 
-class FoundNotificationDialogState extends State<FoundNotificationDialog> {
+class LostNotificationDialogState extends State<LostNotificationDialog> {
 
   bool? isChecked = false;
 
@@ -37,7 +37,7 @@ class FoundNotificationDialogState extends State<FoundNotificationDialog> {
                 Column(
                   children: [
                      Container(
-                        width: 308.27,
+                        width: 307.8,
                         height: 155,
                         padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                         decoration: const BoxDecoration(
@@ -61,8 +61,8 @@ class FoundNotificationDialogState extends State<FoundNotificationDialog> {
                                child: RichText(
                                  text: TextSpan(
                                    text:
-                                   'LostCard is out of any agreement upon contacting the person '
-                                       'who found your document  ',
+                                   'LostCard is out of any misunderstanding upon contacting '
+                                       'the person who reported this document loss. ',
                                    style: TextStyle(
                                      color: CustomColor().IconsColor,
                                    ),
@@ -123,7 +123,7 @@ class FoundNotificationDialogState extends State<FoundNotificationDialog> {
                   border: "border",
                   textColor: Colors.white,
                   textFontSize: 18,
-                    backgroundColor: CustomColor().IconsColor,
+                  backgroundColor: CustomColor().IconsColor,
                   onPressed: () {
                     Navigator.of(context).pop();
                     showDialog(

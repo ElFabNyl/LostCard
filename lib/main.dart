@@ -37,11 +37,9 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: SplashPage(duration: 10, goToPage: OnboardingPageSearching() )
+        home: SplashPage(duration: 10, goToPage:NavBarPagesManager(selectedIndex: 0) )
 
         //goToPage: NavBarPagesManager(selectedIndex: 0)
-
-        //goToPage: const HomePage()
 
         //goToPage: OnboardingPageSearching()
 

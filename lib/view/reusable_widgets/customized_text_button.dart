@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lostcard/constant/custom_color.dart';
 
 class CustomizedTextButton extends StatelessWidget {
   CustomizedTextButton({
@@ -9,8 +10,10 @@ class CustomizedTextButton extends StatelessWidget {
     required this.border,
     required this.textColor,
     required this.textFontSize,
+    required this.backgroundColor,
     this.onPressed,
     this.textAlignment,
+
   }) : super(key: key);
 
   String text;
@@ -22,6 +25,7 @@ class CustomizedTextButton extends StatelessWidget {
   Color textColor;
   double textFontSize;
   TextAlign? textAlignment = TextAlign.end;
+  Color backgroundColor = CustomColor().IconsColor;
 
   void Function()? onPressed;
 
@@ -44,12 +48,12 @@ class CustomizedTextButton extends StatelessWidget {
               ),
               style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all(const Color(0xFF082E02)),
+                      MaterialStateProperty.all(backgroundColor),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
-                        side: const BorderSide(
-                          color: Color(0xFF082E02),
+                        side: BorderSide(
+                          color: backgroundColor,
                         )),
                   )),
               onPressed: onPressed,

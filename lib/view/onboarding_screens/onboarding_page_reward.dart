@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../constant/custom_color.dart';
 import '../reusable_widgets/customized_text_button.dart';
 import 'package:lostcard/view/authentication/signin/signin.dart';
 
@@ -66,6 +67,7 @@ class OnboardingPageReward extends StatelessWidget {
                 border: 'border',
                 textColor: Colors.white,
                 textFontSize: 18,
+                  backgroundColor: CustomColor().IconsColor,
                 onPressed: () {
                   Navigator.push(
                     context,
