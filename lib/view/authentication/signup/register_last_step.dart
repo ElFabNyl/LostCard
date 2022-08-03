@@ -1,97 +1,47 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lostcard/services/signup/phone_otp_verification.dart';
-import 'package:lostcard/view/authentication/signup/otp_verification_signup.dart';
+import 'package:lostcard/utils/validate_number.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_field.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../constant/custom_color.dart';
+import '../../reusable_widgets/custom_snack_bar.dart';
 import '../../reusable_widgets/loading_indicator.dart';
 
 class RegisterLastStep extends StatefulWidget {
   final String email;
   final String password;
 
-  const RegisterLastStep( {Key? key,
-  required this.email,
-  required this.password,}) : super(key: key);
+  const RegisterLastStep({
+    Key? key,
+    required this.email,
+    required this.password,
+  }) : super(key: key);
 
   @override
-  RegisterLastStepState createState() => RegisterLastStepState(email: email, password: password);
+  RegisterLastStepState createState() => RegisterLastStepState();
 }
 
-class RegisterLastStepState extends State<RegisterLastStep>{
-  final String email;
-  final String password;
+class RegisterLastStepState extends State<RegisterLastStep> {
+  bool isPhoneNumberEmpty = false;
 
-
-  RegisterLastStepState({required this.email, required this.password});
+  bool isNameEmpty = false;
 
   TextEditingController enterNameController = TextEditingController();
   TextEditingController enterPhoneNumberController = TextEditingController();
 
   final FirebaseAuth auth = FirebaseAuth.instance;
-  var verificationCode ='' ;
+  var verificationCode = '';
 
-  Future verifyPhone(String phoneNumber) async {
+  String setData(String verificationId) {
+    setState(() {
+      verificationCode = verificationId;
+    });
 
-
-    await auth.verifyPhoneNumber(
-      phoneNumber: '+237' + phoneNumber,
-      verificationCompleted: (PhoneAuthCredential credential) async {
-      },
-      verificationFailed: (FirebaseAuthException e) async {
-        print (e.message);
-        print('OTP code not valid!');
-
-        const snackBar = SnackBar(
-          content: Text('OTP code not valid!'),
-        );
-
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-      },
-      codeSent: (String verificationId, int? resendToken)async {
-
-         setState(() {
-           this.verificationCode =  verificationId;
-        });
-
-
-        print( 'This is  the the the the the the the the the the another'+verificationCode+'hhhhhhhhhhhhhhh');
-
-         if(verificationCode!=null)
-         {
-
-           LoadingIndicator(this.context).stopLoading();
-
-
-           Navigator.push(
-             context,
-             MaterialPageRoute(
-                 builder: (context) =>  OtpVerificationSignup(verificationId: verificationCode, email: email,password: password,phoneNumber: enterPhoneNumberController.value.text,)),
-
-           );
-         }
-
-
-
-
-      },
-
-      codeAutoRetrievalTimeout: (String verificationId) { },
-
-      timeout: Duration(seconds: 60),
-
-    );
-
-
-
+    return verificationCode;
   }
-
-
-
 
   @override
   @override
@@ -116,7 +66,7 @@ class RegisterLastStepState extends State<RegisterLastStep>{
                 const SizedBox(
                   height: 50,
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 225,
                   height: 47,
                   child: Text(
@@ -125,7 +75,7 @@ class RegisterLastStepState extends State<RegisterLastStep>{
                       fontSize: 40,
                       //fontFamily:'Roboto',
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF023607),
+                      color: CustomColor.primaryColor,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -135,18 +85,18 @@ class RegisterLastStepState extends State<RegisterLastStep>{
                 ),
                 SizedBox(
                     width: 350,
-                    height: 55,
+                    //height: 55,
                     child: Row(
                       //crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                            width: 106,
-                            height: 52,
+                            width: MediaQuery.of(context).size.width * 0.31,
+                            height: 55,
                             alignment: Alignment.centerLeft,
                             decoration: BoxDecoration(
                               border: Border.all(
-                                color: Color(0xFFB1B1B1),
+                                color: const Color(0xFFB1B1B1),
                               ),
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -156,8 +106,8 @@ class RegisterLastStepState extends State<RegisterLastStep>{
                               crossAxisAlignment: CrossAxisAlignment.center,
                               //Center Row contents vertically,
 
-                              children: const [
-                                SizedBox(
+                              children: [
+                                const SizedBox(
                                   height: 18,
                                   width: 20,
                                   child: Center(
@@ -168,9 +118,10 @@ class RegisterLastStepState extends State<RegisterLastStep>{
                                   ),
                                 ),
                                 SizedBox(
-                                  width: 10,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.02,
                                 ),
-                                Text(
+                                const Text(
                                   "+237",
                                   style: TextStyle(
                                     fontSize: 14,
@@ -183,15 +134,24 @@ class RegisterLastStepState extends State<RegisterLastStep>{
                         CustomizedTextField(
                           controller: enterPhoneNumberController,
                           labelText: 'Enter Phone Number',
-                          prefixIcon: const Icon(FontAwesomeIcons.phone,
-                              color: Color(0xFF023607), size: 15),
+                          prefixIcon: Icon(FontAwesomeIcons.phone,
+                              color: CustomColor.primaryColor, size: 15),
                           suffixIcon: const Icon(null),
                           suffixIconBeforeTap: const Icon(null),
                           suffixIconOnTap: const Icon(null),
                           isStringInputType: false,
                           isPassword: false,
-                          width: 230,
+                          width: MediaQuery.of(context).size.width * 0.55,
                           height: 52,
+                          errorText:
+                              isPhoneNumberEmpty ? "Can't be empty" : null,
+                          onChanged: (_) {
+                            enterPhoneNumberController.value.text.isEmpty
+                                ? isPhoneNumberEmpty = true
+                                : isPhoneNumberEmpty = false;
+
+                            setState(() {});
+                          },
                         ),
                       ],
                     )),
@@ -201,8 +161,8 @@ class RegisterLastStepState extends State<RegisterLastStep>{
                 CustomizedTextField(
                   controller: enterNameController,
                   labelText: 'Enter Name',
-                  prefixIcon: const Icon(FontAwesomeIcons.solidUser,
-                      color: Color(0xFF023607), size: 15),
+                  prefixIcon: Icon(FontAwesomeIcons.solidUser,
+                      color: CustomColor.primaryColor, size: 15),
                   suffixIcon: const Icon(null),
                   suffixIconBeforeTap: const Icon(null),
                   suffixIconOnTap: const Icon(null),
@@ -210,6 +170,14 @@ class RegisterLastStepState extends State<RegisterLastStep>{
                   isPassword: false,
                   width: 350,
                   height: 52,
+                  errorText: isNameEmpty ? "Can't be empty" : null,
+                  onChanged: (_) {
+                    enterNameController.value.text.isEmpty
+                        ? isNameEmpty = true
+                        : isNameEmpty = false;
+
+                    setState(() {});
+                  },
                 ),
                 const SizedBox(
                   height: 86,
@@ -222,17 +190,36 @@ class RegisterLastStepState extends State<RegisterLastStep>{
                     border: 'border',
                     textColor: Colors.white,
                     textFontSize: 18,
-                      backgroundColor: CustomColor().IconsColor,
-                    onPressed: ()  async {
+                    backgroundColor: CustomColor.primaryColor,
+                    onPressed: () async {
+                      if (enterPhoneNumberController.value.text.isNotEmpty &&
+                          enterNameController.value.text.isNotEmpty) {
+                        if (enterPhoneNumberController.value.text.length != 9) {
+                          CustomSnackBar().showCustomSnackBar(context,
+                              'A good phone number must have 9 digits');
+                        } else {
+                          if (ValidateNumber().isNumber(
+                              enterPhoneNumberController.value.text)) {
+                            LoadingIndicator(this.context).startLoading();
 
-                      LoadingIndicator(this.context).startLoading();
+                            await PhoneOTPVerification(FirebaseAuth.instance)
+                                .verifyPhone(
+                                    enterPhoneNumberController.value.text,
+                                    setData,
+                                    context,
+                                    widget.email,
+                                    widget.password);
+                          } else {
+                            CustomSnackBar().showCustomSnackBar(
+                                context, 'A number cannot contain characters');
+                          }
+                        }
+                      } else {
+                        CustomSnackBar().showCustomSnackBar(
+                            context, 'Please fill all the empty fields');
 
-
-                        await verifyPhone(enterPhoneNumberController.value.text);
-
-                      print(this.email);
-                      print(this.password);
-
+                        setState(() {});
+                      }
                     },
                   ),
                 ),
@@ -240,6 +227,5 @@ class RegisterLastStepState extends State<RegisterLastStep>{
             ),
           )),
     ));
-    throw UnimplementedError();
   }
 }

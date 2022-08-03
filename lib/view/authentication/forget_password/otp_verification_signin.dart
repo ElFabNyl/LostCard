@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lostcard/view/authentication/forget_password/new_password.dart';
-import 'package:lostcard/view/authentication/signin/signin.dart';
-
 import '../../../constant/custom_color.dart';
 import '../../reusable_widgets/customized_text_button.dart';
 import '../../reusable_widgets/customized_text_field.dart';
 
-class OtpVerificationSignin extends StatefulWidget {
-  const OtpVerificationSignin({Key? key}) : super(key: key);
+class OtpVerificationSignIn extends StatefulWidget {
+  const OtpVerificationSignIn({Key? key}) : super(key: key);
 
   @override
-  OtpVerificationSigninState createState() => OtpVerificationSigninState();
+  OtpVerificationSignInState createState() => OtpVerificationSignInState();
 }
 
-class OtpVerificationSigninState extends State<OtpVerificationSignin> {
+class OtpVerificationSignInState extends State<OtpVerificationSignIn> {
   TextEditingController enterCodeController = TextEditingController();
 
   int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 120;
@@ -73,7 +70,7 @@ class OtpVerificationSigninState extends State<OtpVerificationSignin> {
                     controller: enterCodeController,
                     labelText: 'Enter Code',
                     prefixIcon: Icon(FontAwesomeIcons.lock,
-                        color: CustomColor().IconsColor, size: 15),
+                        color: CustomColor.primaryColor, size: 15),
                     suffixIcon: const Icon(null),
                     suffixIconBeforeTap: const Icon(null),
                     suffixIconOnTap: const Icon(null),
@@ -123,7 +120,7 @@ class OtpVerificationSigninState extends State<OtpVerificationSignin> {
                         buttonWidth: 100,
                         buttonHeight: 40,
                         border: 'noBorder',
-                          backgroundColor: CustomColor().IconsColor,
+                        backgroundColor: CustomColor.primaryColor,
                         textColor: const Color(0xFF133E04),
                         textFontSize: 14,
                       ),
@@ -141,7 +138,7 @@ class OtpVerificationSigninState extends State<OtpVerificationSignin> {
                 border: 'border',
                 textColor: Colors.white,
                 textFontSize: 18,
-                  backgroundColor: CustomColor().IconsColor,
+                backgroundColor: CustomColor.primaryColor,
               ),
             ],
           ),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:lostcard/view/authentication/signin/signin.dart';
 import 'package:lostcard/view/onboarding_screens/onboarding_page_registering_signaling.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
-
 import '../../constant/custom_color.dart';
 
 class OnboardingPageSearching extends StatelessWidget {
+  const OnboardingPageSearching({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,15 +16,30 @@ class OnboardingPageSearching extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const Align(
+               Align(
                 alignment: Alignment.bottomRight,
-                child: Text(
-                  "Skip",
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Color(0xFF868686),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: CustomizedTextButton(
+                      text: 'Skip',
+                      buttonWidth: 50,
+                      buttonHeight: 40,
+                      border: 'noBorder',
+                      textColor: const Color(0xFF868686),
+                      textFontSize: 15,
+                      backgroundColor: CustomColor.primaryColor,
+                      textAlignment: TextAlign.end,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignIn()),
+                        );
+                      },
+                    ),
                   ),
-                ),
+
+
               ),
               const SizedBox(
                 height: 140,
@@ -67,13 +84,13 @@ class OnboardingPageSearching extends StatelessWidget {
                 border: 'border',
                 textColor: Colors.white,
                 textFontSize: 18,
-                  backgroundColor: CustomColor().IconsColor,
+                backgroundColor: CustomColor.primaryColor,
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            OnboardingPageRegisteringSignaling()),
+                            const OnboardingPageRegisteringSignaling()),
                   );
                 },
               ),

@@ -3,35 +3,33 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lostcard/services/facebook_authentication/facebook_signin_auth.dart';
 import 'package:lostcard/services/google_authentication/google_signin_auth.dart';
 import 'package:lostcard/services/signin/login_auth.dart';
-import 'package:lostcard/services/signup/signup_auth.dart';
+import 'package:lostcard/utils/validate_password.dart';
 import 'package:lostcard/view/authentication/forget_password/forgot_password.dart';
 import 'package:lostcard/view/authentication/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:lostcard/view/home_page/home_page.dart';
+import 'package:lostcard/view/reusable_widgets/custom_snack_bar.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_field.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 import 'package:lostcard/view/reusable_widgets/loading_indicator.dart';
-
-
 import '../../../constant/custom_color.dart';
 import '../../../utils/validate_email_address.dart';
 import '../../nav_bar_pages_manager/bottom_nav_bar_pages_manager.dart';
 import '../../reusable_widgets/customized_text_button_icon.dart';
 
-class Signin extends StatefulWidget {
-  const Signin({Key? key}) : super(key: key);
+class SignIn extends StatefulWidget {
+  const SignIn({Key? key}) : super(key: key);
 
   @override
-  SigninState createState() => SigninState();
+  SignInState createState() => SignInState();
 }
 
-class SigninState extends State<Signin> {
+class SignInState extends State<SignIn> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  var emailErrorText;
 
-
-  var emailErrorText ;
   var passwordErrorText;
 
   bool isEmailEmpty = true;
@@ -39,8 +37,8 @@ class SigninState extends State<Signin> {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  var emailText ='';
-  var  passwordText='' ;
+  var emailText = '';
+  var passwordText = '';
 
   @override
   void dispose() {
@@ -51,29 +49,23 @@ class SigninState extends State<Signin> {
 
   String? get _errorText {
     // at any time, we can get the text from _controller.value.text
-     emailText = emailController.value.text;
+    emailText = emailController.value.text;
     passwordText = passwordController.value.text;
     // Note: you can do your own custom validation here
     // Move this logic this outside the widget for more testable code
-    if (emailText.isEmpty&&passwordText.isEmpty) {
+    if (emailText.isEmpty && passwordText.isEmpty) {
       emailErrorText = "Can't be empty";
       passwordErrorText = "Can't be empty";
       return emailErrorText;
     }
-      if (passwordText.isEmpty) {
-        passwordErrorText = "Can't be empty";
-        return passwordErrorText;
-      }
-        if (passwordText.length <= 4) {
-        passwordErrorText = "Too short, enter at least five characters";
-        return emailErrorText;
-      }
-
-
-
-
-
-    // return null if the text is valid
+    if (passwordText.isEmpty) {
+      passwordErrorText = "Can't be empty";
+      return passwordErrorText;
+    }
+    if (passwordText.length <= 7) {
+      passwordErrorText = "Too short, enter at least 8 characters";
+      return emailErrorText;
+    }
     return null;
   }
 
@@ -98,13 +90,13 @@ class SigninState extends State<Signin> {
               const SizedBox(
                 height: 50,
               ),
-              const Text(
+              Text(
                 "Sign in",
                 style: TextStyle(
                   fontSize: 40,
                   //fontFamily:'Roboto',
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF023607),
+                  color: CustomColor.primaryColor,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -116,7 +108,7 @@ class SigninState extends State<Signin> {
                   controller: emailController,
                   labelText: 'Email address',
                   prefixIcon: Icon(FontAwesomeIcons.solidUser,
-                      color: CustomColor().IconsColor, size: 15),
+                      color: CustomColor.primaryColor, size: 15),
                   suffixIcon: const Icon(null),
                   suffixIconBeforeTap: const Icon(null),
                   suffixIconOnTap: const Icon(null),
@@ -124,18 +116,13 @@ class SigninState extends State<Signin> {
                   isPassword: false,
                   width: 350,
                   height: 52,
-                  errorText:
-                      isEmailEmpty ? emailErrorText : null,
-                  onChanged:  (_){
+                  errorText: isEmailEmpty ? emailErrorText : null,
+                  onChanged: (_) {
+                    emailController.value.text.isEmpty
+                        ? isEmailEmpty = true
+                        : isEmailEmpty = false;
 
-                    emailController.value.text.isEmpty? isEmailEmpty = true : isEmailEmpty = false ;
-
-                    setState(() {
-
-
-                    });
-
-
+                    setState(() {});
                   },
                 ),
               ),
@@ -147,35 +134,28 @@ class SigninState extends State<Signin> {
                   controller: passwordController,
                   labelText: 'Password',
                   prefixIcon: Icon(FontAwesomeIcons.key,
-                      color: CustomColor().IconsColor, size: 15),
+                      color: CustomColor.primaryColor, size: 15),
                   suffixIcon: const Icon(null),
                   suffixIconBeforeTap: Icon(FontAwesomeIcons.eyeLowVision,
-                      color: CustomColor().IconsColor, size: 15),
+                      color: CustomColor.primaryColor, size: 15),
                   suffixIconOnTap: Icon(FontAwesomeIcons.solidEye,
-                      color: CustomColor().IconsColor, size: 15),
+                      color: CustomColor.primaryColor, size: 15),
                   isStringInputType: true,
                   isPassword: true,
                   width: 350,
                   height: 52,
-                  errorText:
-                      (isPasswordEmpty||passwordText.length<=4 )? passwordErrorText : null,
-                  onChanged:  (value){
-                    passwordController.value.text.isEmpty? isPasswordEmpty = true : isPasswordEmpty = false ;
+                  errorText: (isPasswordEmpty || passwordText.length <= 7)
+                      ? passwordErrorText
+                      : null,
+                  onChanged: (value) {
+                    passwordController.value.text.isEmpty
+                        ? isPasswordEmpty = true
+                        : isPasswordEmpty = false;
                     passwordText = value;
                     _errorText;
 
-                    print(passwordText);
-
-                    setState(() {
-
-
-
-                    });
-
-
+                    setState(() {});
                   },
-
-
                 ),
               ),
               SizedBox(
@@ -189,10 +169,9 @@ class SigninState extends State<Signin> {
                     border: 'noBorder',
                     textColor: const Color(0xFF133E04),
                     textFontSize: 16,
-                    backgroundColor: CustomColor().IconsColor,
+                    backgroundColor: CustomColor.primaryColor,
                     textAlignment: TextAlign.end,
-                    onPressed: (){
-
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -212,98 +191,86 @@ class SigninState extends State<Signin> {
                 border: 'border',
                 textColor: Colors.white,
                 textFontSize: 18,
-                  backgroundColor: CustomColor().IconsColor,
+                backgroundColor: CustomColor.primaryColor,
                 onPressed: () async {
                   if (emailController.value.text.isNotEmpty &&
                       passwordController.value.text.isNotEmpty &&
-                      passwordController.value.text.length > 4) {
-                    print(emailController.value.text);
-                    print(passwordController.value.text);
+                      passwordController.value.text.length > 7) {
+                    if (ValidateEmailAddress()
+                        .isEmailValid(emailController.value.text)) {
+                      if (ValidatePassword()
+                          .isStrongPassword(passwordController.value.text)) {
+                        LoadingIndicator(this.context).startLoading();
 
-                    if(ValidateEmailAddress().isEmailValid(emailController.value.text)){
+                        try {
+                          final newUser = await LoginAuth(FirebaseAuth.instance)
+                              .signIn(
+                                  email: emailController.value.text,
+                                  password: passwordController.value.text,
+                                  context: context);
 
+                          if (newUser != null) {
+                            LoadingIndicator(this.context).stopLoading();
 
-
-                      LoadingIndicator(this.context).startLoading();
-
-
-
-                      try {
-                        print("Nathalie");
-
-                        //For the Signin
-                        final newUser = await LoginAuth(FirebaseAuth.instance).signin(
-                            email: emailController.value.text,
-                            password: passwordController.value.text);
-
-                        //For the Signup
-
-                        // final newUser = SignupAuth(FirebaseAuth.instance).signup(
-                        //     email: emailController.value.text,
-                        //     password: passwordController.value.text);
-                        print('Here is the new user');
-
-                        if (newUser != null) {
-
-                          print('Here is the new user 222222222222222');
-
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                       NavBarPagesManager(
+                                          selectedIndex: 0)),
+                            );
+                          }
+                        } on FirebaseAuthException catch (e) {
                           LoadingIndicator(this.context).stopLoading();
 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>  NavBarPagesManager(selectedIndex: 0) ),
-                          );
+                          CustomSnackBar().showCustomSnackBar(context,
+                              'This account does not exist in our system, Sign up first');
                         }
-                      } on FirebaseAuthException catch (e) {
-                        print(e);
+                      } else {
+                        CustomSnackBar().showCustomSnackBar(context,
+                            'Your password is not strong enough, include at least 1 special character! Ex:@, #, ",*,&...');
                       }
-
-
-
-
+                    } else {
+                      CustomSnackBar().showCustomSnackBar(context,
+                          'Email address invalid, Please enter a valid email address!');
                     }
-                    else{
-
-                      const snackBar = SnackBar(
-                        content: Text('Email address invalid, Please enter a valid email address!'),
-                      );
-
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-
-                    }
-
-
-
-
-
-
-
-
-                  }
-                  else {
+                  } else {
                     null;
                     _errorText;
-                    setState(() {
-
-                    });
+                    setState(() {});
                   }
-                  ;
                 },
               ),
               const SizedBox(
                 height: 10,
               ),
-              const Text(
-                "Or",
-                style: TextStyle(
-                  fontSize: 16,
-                  //fontFamily:'Roboto',
-                  fontWeight: FontWeight.normal,
-                  color: Colors.black,
-                ),
-                textAlign: TextAlign.center,
+              Row(
+                children: const [
+                  Expanded(
+                    child: Divider(
+                      height: 20,
+                      //color: Colors.grey,
+                      thickness: 1,
+                    ),
+                  ),
+                  Text(
+                    " Or  ",
+                    style: TextStyle(
+                      fontSize: 16,
+                      //fontFamily:'Roboto',
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  Expanded(
+                    child: Divider(
+                      height: 20,
+                      //color: Colors.grey,
+                      thickness: 1,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 10,
@@ -322,27 +289,20 @@ class SigninState extends State<Signin> {
                 width: 340,
                 height: 55,
                 onPressed: () async {
-
-                    try {
-                      print("Nathalie");
-
-                      final newUser = await GoogleSigninAuth(FirebaseAuth.instance).googleSignin().then((_) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()),
-                        );
-                      });
-                      print(newUser);
-
-
-                    } on FirebaseAuthException catch (e) {
-                      print(e);
-                    }
-
-                  ;
+                  try {
+                    await GoogleSignInAuth(FirebaseAuth.instance)
+                        .googleSignIn()
+                        .then((_) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()),
+                      );
+                    });
+                  } on FirebaseAuthException catch (e) {
+                    print(e);
+                  }
                 },
-
               ),
               const SizedBox(
                 height: 20,
@@ -361,13 +321,10 @@ class SigninState extends State<Signin> {
                 width: 340,
                 height: 55,
                 onPressed: () async {
-
                   try {
-                    print("Nathalie");
-
-                    final newUser = await FacebookSigninAuth(FirebaseAuth.instance).signInWithFacebook();
-                    print(newUser);
-
+                    final newUser =
+                        await FacebookSignInAuth(FirebaseAuth.instance)
+                            .signInWithFacebook();
 
                     if (newUser != null) {
                       Navigator.push(
@@ -379,10 +336,7 @@ class SigninState extends State<Signin> {
                   } on FirebaseAuthException catch (e) {
                     print(e);
                   }
-
-                  ;
                 },
-
               ),
               const SizedBox(
                 height: 20,
@@ -412,16 +366,15 @@ class SigninState extends State<Signin> {
                       buttonWidth: 100,
                       buttonHeight: 40,
                       border: 'noBorder',
-                        backgroundColor: CustomColor().IconsColor,
-                      textColor: const Color(0xFF133E04),
+                      backgroundColor: CustomColor.primaryColor,
+                      textColor: CustomColor.primaryColor,
                       textFontSize: 14,
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Signup()),
+                              builder: (context) => const SignUp()),
                         );
-
                       },
                     ),
                   ),
@@ -432,6 +385,5 @@ class SigninState extends State<Signin> {
         ),
       ),
     ));
-    throw UnimplementedError();
   }
 }

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import '../../../constant/custom_color.dart';
 import '../../reusable_widgets/customized_text_button.dart';
 import '../../reusable_widgets/customized_text_field.dart';
-import 'otp_verification_signin.dart';
 
 class NewPassword extends StatefulWidget {
   const NewPassword({Key? key}) : super(key: key);
@@ -62,12 +60,12 @@ class NewPasswordState extends State<NewPassword> {
                   controller: enterNewPasswordController,
                   labelText: 'Password',
                   prefixIcon: Icon(FontAwesomeIcons.key,
-                      color: CustomColor().IconsColor, size: 15),
+                      color: CustomColor.primaryColor, size: 15),
                   suffixIcon: const Icon(null),
                   suffixIconBeforeTap: Icon(FontAwesomeIcons.eyeLowVision,
-                      color: CustomColor().IconsColor, size: 15),
+                      color: CustomColor.primaryColor, size: 15),
                   suffixIconOnTap: Icon(FontAwesomeIcons.solidEye,
-                      color: CustomColor().IconsColor, size: 15),
+                      color: CustomColor.primaryColor, size: 15),
                   isStringInputType: true,
                   isPassword: true,
                   hintText: '********************',
@@ -85,7 +83,7 @@ class NewPasswordState extends State<NewPassword> {
                 border: 'border',
                 textColor: Colors.white,
                 textFontSize: 18,
-                  backgroundColor: CustomColor().IconsColor,
+                backgroundColor: CustomColor.primaryColor,
               ),
             ],
           ),

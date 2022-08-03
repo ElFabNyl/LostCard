@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../constant/custom_color.dart';
+
 class CustomizedTextField extends StatefulWidget {
   CustomizedTextField({
     Key? key,
@@ -16,7 +18,6 @@ class CustomizedTextField extends StatefulWidget {
     this.height,
     this.errorText,
     this.onChanged,
-
   }) : super(key: key);
 
   final TextEditingController? controller;
@@ -32,21 +33,19 @@ class CustomizedTextField extends StatefulWidget {
 
   final double? width;
   final double? height;
-  String? errorText;
+  String? errorText = '';
   void Function(String)? onChanged;
 
-
+  @override
   CustomizedTextFieldState createState() => CustomizedTextFieldState();
 }
 
 class CustomizedTextFieldState extends State<CustomizedTextField> {
-
-
   @override
   Widget build(BuildContext context) {
     return (SizedBox(
       width: widget.width,
-      height: widget.height,
+      //height: widget.height,
       child: TextField(
         controller: widget.controller,
         obscureText: ((widget.isPassword!) ? true : false),
@@ -54,10 +53,12 @@ class CustomizedTextFieldState extends State<CustomizedTextField> {
             ? TextInputType.text
             : TextInputType.number),
         decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30.0),
-              borderSide: const BorderSide(
-                color: Color(0xFF082E02),
+              borderSide: BorderSide(
+                color: CustomColor.primaryColor,
               )),
           labelText: widget.labelText,
           prefixIcon: widget.prefixIcon,
@@ -75,13 +76,7 @@ class CustomizedTextFieldState extends State<CustomizedTextField> {
           errorText: widget.errorText,
         ),
         onChanged: widget.onChanged,
-
       ),
     ));
-
-    throw UnimplementedError();
   }
-
-
-  }
-
+}

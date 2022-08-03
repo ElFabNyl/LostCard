@@ -4,6 +4,8 @@ import '../reusable_widgets/customized_text_button.dart';
 import 'package:lostcard/view/authentication/signin/signin.dart';
 
 class OnboardingPageReward extends StatelessWidget {
+  const OnboardingPageReward({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,13 +15,26 @@ class OnboardingPageReward extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const Align(
+               Align(
                 alignment: Alignment.bottomRight,
-                child: Text(
-                  "Skip",
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Color(0xFF868686),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: CustomizedTextButton(
+                    text: 'Skip',
+                    buttonWidth: 50,
+                    buttonHeight: 40,
+                    border: 'noBorder',
+                    textColor: const Color(0xFF868686),
+                    textFontSize: 15,
+                    backgroundColor: CustomColor.primaryColor,
+                    textAlignment: TextAlign.end,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignIn()),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -67,11 +82,11 @@ class OnboardingPageReward extends StatelessWidget {
                 border: 'border',
                 textColor: Colors.white,
                 textFontSize: 18,
-                  backgroundColor: CustomColor().IconsColor,
+                backgroundColor: CustomColor.primaryColor,
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Signin()),
+                    MaterialPageRoute(builder: (context) => const SignIn()),
                   );
                 },
               ),

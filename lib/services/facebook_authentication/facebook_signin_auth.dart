@@ -1,14 +1,11 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:lostcard/services/facebook_authentication/resource.dart';
 
-class FacebookSigninAuth{
-
+class FacebookSignInAuth {
   final FirebaseAuth auth;
 
-  FacebookSigninAuth(this.auth);
-
+  FacebookSignInAuth(this.auth);
 
   Future<Resource?> signInWithFacebook() async {
     try {
@@ -16,31 +13,18 @@ class FacebookSigninAuth{
       switch (result.status) {
         case LoginStatus.success:
           final AuthCredential facebookCredential =
-          FacebookAuthProvider.credential(result.accessToken!.token);
-          final userCredential =
+              FacebookAuthProvider.credential(result.accessToken!.token);
           await auth.signInWithCredential(facebookCredential);
-          return Resource(status: Status.Success);
+          return Resource(status: Status.success);
         case LoginStatus.cancelled:
-          return Resource(status: Status.Cancelled);
+          return Resource(status: Status.cancelled);
         case LoginStatus.failed:
-          return Resource(status: Status.Error);
+          return Resource(status: Status.error);
         default:
           return null;
       }
-    } on FirebaseAuthException catch (e) {
-      throw e;
+    } on FirebaseAuthException {
+      rethrow;
     }
   }
-}
-
-class Resource{
-
-  final Status status;
-  Resource({required this.status});
-}
-
-enum Status {
-  Success,
-  Error,
-  Cancelled
 }

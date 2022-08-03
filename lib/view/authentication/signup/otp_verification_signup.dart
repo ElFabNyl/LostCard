@@ -4,49 +4,34 @@ import 'package:flutter_countdown_timer/index.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lostcard/constant/custom_color.dart';
 import 'package:lostcard/services/signup/phone_otp_verification.dart';
-import 'package:lostcard/view/authentication/signup/register_last_step.dart';
+import 'package:lostcard/utils/validate_number.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_field.dart';
 import 'package:flutter/material.dart';
 
+import '../../reusable_widgets/custom_snack_bar.dart';
 import '../../reusable_widgets/loading_indicator.dart';
 
 class OtpVerificationSignup extends StatefulWidget {
-  final String verificationId;
+  String? verificationId;
   final String email;
   final String password;
   final String phoneNumber;
 
-  const OtpVerificationSignup({
-    required this.verificationId,
-    required this.email,
-    required this.password,
-    required this.phoneNumber,
-    Key? key
-  }) : super(key: key);
+  OtpVerificationSignup(
+      {this.verificationId,
+      required this.email,
+      required this.password,
+      required this.phoneNumber,
+      Key? key})
+      : super(key: key);
 
   @override
-  OtpVerificationSignupState createState() => OtpVerificationSignupState(verificationId:verificationId, email:email, password:password, phoneNumber:phoneNumber);
+  OtpVerificationSignupState createState() => OtpVerificationSignupState();
 }
 
 class OtpVerificationSignupState extends State<OtpVerificationSignup> {
-  final String verificationId;
-  final String email;
-  final String password;
-  final String phoneNumber;
-
-  OtpVerificationSignupState({
-    required this.verificationId,
-    required this.email,
-    required this.password,
-    required this.phoneNumber,
-
-});
-
   TextEditingController enterCodeController = TextEditingController();
-
-
-
 
   int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60;
 
@@ -54,14 +39,22 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
 
   bool visible = false;
 
+  bool isCodeEmpty = false;
 
+  @override
   void dispose() {
     //timerController.dispose();
 
     super.dispose();
   }
 
+  String? setData(String verificationCode) {
+    setState(() {
+      widget.verificationId = verificationCode;
+    });
 
+    return widget.verificationId;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,13 +77,13 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
               const SizedBox(
                 height: 50,
               ),
-              const Text(
+              Text(
                 "Sign up",
                 style: TextStyle(
                   fontSize: 40,
                   //fontFamily:'Roboto',
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF023607),
+                  color: CustomColor.primaryColor,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -118,7 +111,7 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
                     controller: enterCodeController,
                     labelText: 'Enter Code',
                     prefixIcon: Icon(FontAwesomeIcons.lock,
-                        color: CustomColor().IconsColor, size: 15),
+                        color: CustomColor.primaryColor, size: 15),
                     suffixIcon: const Icon(null),
                     suffixIconBeforeTap: const Icon(null),
                     suffixIconOnTap: const Icon(null),
@@ -126,6 +119,14 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
                     isPassword: false,
                     width: 350,
                     height: 52,
+                    errorText: isCodeEmpty ? "Can't be empty" : null,
+                    onChanged: (_) {
+                      enterCodeController.value.text.isEmpty
+                          ? isCodeEmpty = true
+                          : isCodeEmpty = false;
+
+                      setState(() {});
+                    },
                   ),
                 ),
               ),
@@ -136,7 +137,6 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
                 //controller: timerController,
                 endTime: endTime,
                 onEnd: () {
-
                   setState(() {
                     visible = true;
                   });
@@ -172,14 +172,13 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
                         border: 'noBorder',
                         textColor: const Color(0xFF133E04),
                         textFontSize: 14,
-                          backgroundColor: CustomColor().IconsColor,
-                        onPressed: () async{
-
+                        backgroundColor: CustomColor.primaryColor,
+                        onPressed: () async {
                           LoadingIndicator(this.context).startLoading();
 
-
-                          await RegisterLastStepState(email: email,password: password).verifyPhone(phoneNumber);
-
+                          await PhoneOTPVerification(FirebaseAuth.instance)
+                              .verifyPhone(widget.phoneNumber, setData, context,
+                                  widget.email, widget.password);
                         },
                       ),
                     ),
@@ -196,10 +195,28 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
                 border: 'border',
                 textColor: Colors.white,
                 textFontSize: 18,
-                  backgroundColor: CustomColor().IconsColor,
+                backgroundColor: CustomColor.primaryColor,
                 onPressed: () async {
-
-                  await PhoneOTPVerification(FirebaseAuth.instance).verifyOTP( verificationId, enterCodeController.value.text, email,password, this.context);
+                  if (enterCodeController.value.text.isNotEmpty) {
+                    if (ValidateNumber()
+                        .isNumber(enterCodeController.value.text)) {
+                      LoadingIndicator(this.context).startLoading();
+                      await PhoneOTPVerification(FirebaseAuth.instance)
+                          .verifyOTP(
+                              widget.verificationId,
+                              enterCodeController.value.text,
+                              widget.email,
+                              widget.password,
+                              this.context);
+                    } else {
+                      CustomSnackBar().showCustomSnackBar(
+                          context, 'OTP code does not contain characters');
+                    }
+                  } else {
+                    CustomSnackBar().showCustomSnackBar(
+                        context, 'Code cannot be empty, please enter a value');
+                    setState(() {});
+                  }
                 },
               ),
             ],
@@ -207,6 +224,5 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
         ),
       ),
     ));
-    throw UnimplementedError();
   }
 }

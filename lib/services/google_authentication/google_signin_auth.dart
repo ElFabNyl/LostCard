@@ -1,15 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class GoogleSigninAuth  {
+class GoogleSignInAuth  {
   GoogleSignIn googleAuth = GoogleSignIn();
   GoogleSignInAccount? googleAccount;
   final FirebaseAuth auth;
 
-  GoogleSigninAuth(this.auth);
+  GoogleSignInAuth(this.auth);
 
-  Future<void> googleSignin() async {
+  Future<void> googleSignIn() async {
     googleAccount = await googleAuth.signIn();
 
 
@@ -20,13 +19,12 @@ class GoogleSigninAuth  {
           idToken: googleSignInAuthentication.idToken,
           accessToken: googleSignInAuthentication.accessToken);
 
-      // Getting users credential
-      UserCredential result = await auth.signInWithCredential(authCredential);
-      User? user = result.user;
+       await auth.signInWithCredential(authCredential);
+
     }
   }
 
-  googleSignout() async {
+  googleSignOut() async {
     googleAccount = await googleAuth.signOut();
 
   }

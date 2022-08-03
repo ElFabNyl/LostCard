@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import '../onboarding_screens/onboarding_page_registering_signaling.dart';
+
 
 class CustomisedTextButtonIcon extends StatelessWidget {
-  Icon buttonIcon;
-  Text labelText;
-  Color backgroundColor;
-  double width;
-  double height;
-  void Function()? onPressed;
+  final Icon buttonIcon;
+  final Text labelText;
+  final Color backgroundColor;
+  final double width;
+  final double height;
+  final void Function()? onPressed;
 
-  CustomisedTextButtonIcon({
+  const CustomisedTextButtonIcon({
     Key? key,
     required this.buttonIcon,
     required this.labelText,
@@ -41,6 +41,6 @@ class CustomisedTextButtonIcon extends StatelessWidget {
       ),
     ));
 
-    throw UnimplementedError();
+
   }
 }

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lostcard/view/authentication/forget_password/new_password.dart';
-import 'package:lostcard/view/authentication/forget_password/otp_verification_signin.dart';
-import 'package:lostcard/view/authentication/signin/signin.dart';
-
 import '../../../constant/custom_color.dart';
 import '../../reusable_widgets/customized_text_button.dart';
 import '../../reusable_widgets/customized_text_field.dart';
@@ -67,7 +64,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
                   controller: emailController,
                   labelText: 'Email address',
                   prefixIcon: Icon(FontAwesomeIcons.solidUser,
-                      color: CustomColor().IconsColor, size: 15),
+                      color: CustomColor.primaryColor, size: 15),
                   suffixIcon: const Icon(null),
                   suffixIconBeforeTap: const Icon(null),
                   suffixIconOnTap: const Icon(null),
@@ -87,9 +84,8 @@ class ForgotPasswordState extends State<ForgotPassword> {
                 border: 'border',
                 textColor: Colors.white,
                 textFontSize: 18,
-                  backgroundColor: CustomColor().IconsColor,
-                onPressed: (){
-
+                backgroundColor: CustomColor.primaryColor,
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(

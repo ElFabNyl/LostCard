@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lostcard/constant/custom_color.dart';
 
 class LoadingIndicator{
   late BuildContext context;
@@ -9,13 +10,13 @@ class LoadingIndicator{
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context){
-          return const SimpleDialog(
+          return  SimpleDialog(
             elevation: 0.0,
             backgroundColor: Colors.transparent,
             children: <Widget>[
               Center(
                 child: CircularProgressIndicator(
-                  color: Colors.green,
+                  color: CustomColor.primaryColor,
                 ),
               )
             ],

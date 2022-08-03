@@ -25,7 +25,7 @@ class CustomizedTextButton extends StatelessWidget {
   Color textColor;
   double textFontSize;
   TextAlign? textAlignment = TextAlign.end;
-  Color backgroundColor = CustomColor().IconsColor;
+  Color backgroundColor = CustomColor.primaryColor;
 
   void Function()? onPressed;
 
@@ -60,7 +60,7 @@ class CustomizedTextButton extends StatelessWidget {
             ),
           ));
         }
-        break;
+
 
       case "noBorder":
         {
@@ -77,7 +77,7 @@ class CustomizedTextButton extends StatelessWidget {
             ),
           ));
         }
-        break;
+
     }
 
     throw UnimplementedError();

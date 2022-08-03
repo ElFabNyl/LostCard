@@ -7,31 +7,21 @@ class CustomizedSearchField extends StatefulWidget {
   CustomizedSearchField({
     Key? key,
     this.controller,
-
-
     this.isStringInputType,
-
     this.width,
     this.height,
     this.onPressed,
-
-
   }) : super(key: key);
 
   final TextEditingController? controller;
 
-
-
   bool? isStringInputType = true;
-
 
   final double? width;
   final double? height;
   void Function()? onPressed;
 
-
-
-
+  @override
   CustomizedSearchFieldState createState() => CustomizedSearchFieldState();
 }
 
@@ -45,24 +35,22 @@ class CustomizedSearchFieldState extends State<CustomizedSearchField> {
       height: widget.height,
       child: TextField(
         controller: widget.controller,
-        obscureText:  false ,
-        keyboardType:  TextInputType.text,
+        obscureText: false,
+        keyboardType: TextInputType.text,
         decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30.0),
               borderSide: const BorderSide(
                 color: Color(0xFF082E02),
-              )
-          ),
-
-          suffixIcon:  IconButton(
+              )),
+          suffixIcon: IconButton(
             onPressed: widget.onPressed,
-            icon: Icon(FontAwesomeIcons.searchengin, color: CustomColor().IconsColor, size:15),
+            icon: Icon(FontAwesomeIcons.searchengin,
+                color: CustomColor.primaryColor, size: 15),
           ),
           hintText: hintText,
-
         ),
-        onChanged:  (value) {
+        onChanged: (value) {
           setState(() {
             hintText = value;
           });
@@ -72,7 +60,4 @@ class CustomizedSearchFieldState extends State<CustomizedSearchField> {
 
     throw UnimplementedError();
   }
-
-
 }
-
