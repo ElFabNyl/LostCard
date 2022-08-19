@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import '../reusable_widgets/custom_card_widget.dart';
+import '../reusable_widgets/list_view_builder.dart';
 
 class Cni extends StatefulWidget {
-  const Cni({Key? key}) : super(key: key);
+  List<Widget> list;
+   Cni({Key? key,
+  required this.list}) : super(key: key);
 
   @override
   CniState createState() => CniState();
@@ -11,51 +14,13 @@ class Cni extends StatefulWidget {
 class CniState extends State<Cni> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Column(
-      children: const  [
-        CustomCard(
-          documentType:
-          'CNI',
-          imageName: 'paul.png',
-          address: ' Lost at Messassi',
-          date: '10/11/21',
-          ownerName: 'Nasaire',
-        ),
+    return SafeArea(
+      child: Container(
+          color: Colors.white,
+          margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+          child:   ListViewBuilder(allDocumentsInDatabase:widget.list,)
+      ),
 
-        SizedBox(
-          height: 20,
-        ),
-
-        CustomCard(
-          documentType:
-          'CNI',
-          imageName: 'paul.png',
-          address: ' Lost at Messassi',
-          date: '10/11/21',
-          ownerName: 'Vin Diesel',
-        ),
-
-        SizedBox(
-          height: 20,
-        ),
-
-        CustomCard(
-          documentType:
-          'CNI',
-          imageName: 'paul.png',
-          address: ' Lost at Messassi',
-          date: '10/11/21',
-          ownerName: 'John Doe',
-        ),
-
-        SizedBox(
-          height: 20,
-        ),
-
-
-
-      ],
-    ));
+    );
   }
 }

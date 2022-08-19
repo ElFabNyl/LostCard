@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lostcard/constant/custom_color.dart';
-import 'package:lostcard/view/search_result_page/search_result.dart';
 
 class CustomizedSearchField extends StatefulWidget {
   CustomizedSearchField({
@@ -11,6 +10,8 @@ class CustomizedSearchField extends StatefulWidget {
     this.width,
     this.height,
     this.onPressed,
+    this.onChanged,
+    this.onTapped,
   }) : super(key: key);
 
   final TextEditingController? controller;
@@ -20,13 +21,15 @@ class CustomizedSearchField extends StatefulWidget {
   final double? width;
   final double? height;
   void Function()? onPressed;
+  void Function()? onTapped;
+  void Function(String)? onChanged;
 
   @override
   CustomizedSearchFieldState createState() => CustomizedSearchFieldState();
 }
 
 class CustomizedSearchFieldState extends State<CustomizedSearchField> {
-  String hintText = 'Search  Document by Name';
+  String hintText = 'Search by Name';
 
   @override
   Widget build(BuildContext context) {
@@ -48,16 +51,12 @@ class CustomizedSearchFieldState extends State<CustomizedSearchField> {
             icon: Icon(FontAwesomeIcons.searchengin,
                 color: CustomColor.primaryColor, size: 15),
           ),
-          hintText: hintText,
+          hintText: 'Search by Name',
         ),
-        onChanged: (value) {
-          setState(() {
-            hintText = value;
-          });
-        },
+        onChanged: widget.onChanged,
+        onTap: widget.onTapped,
       ),
     ));
 
-    throw UnimplementedError();
   }
 }

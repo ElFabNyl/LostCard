@@ -19,6 +19,8 @@ class ModifyProfileDialogState extends State<ModifyProfileDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      insetPadding: EdgeInsets.zero,
+      alignment: Alignment.bottomCenter,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
@@ -26,18 +28,16 @@ class ModifyProfileDialogState extends State<ModifyProfileDialog> {
       backgroundColor: Colors.transparent,
       child: Container(
         padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-        width: 340,
+        width: 395,
         height: 191,
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: Flexible(
-          child: Column(
+        decoration:const BoxDecoration(
+            color: Color(0xFFFDEAF5),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))),
+        child:  Column(
             children: [
               Align(
                 alignment: Alignment.centerLeft,
-                child: Flexible(
-                  child: RichText(
+                child: RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       text: widget.title,
@@ -49,7 +49,6 @@ class ModifyProfileDialogState extends State<ModifyProfileDialog> {
                     ),
                     overflow: TextOverflow.clip,
                   ),
-                ),
               ),
               const SizedBox(
                 height: 20,
@@ -61,7 +60,7 @@ class ModifyProfileDialogState extends State<ModifyProfileDialog> {
                 suffixIcon: const Icon(null),
                 suffixIconBeforeTap: const Icon(null),
                 suffixIconOnTap: const Icon(null),
-                isStringInputType: false,
+                isStringInputType: true,
                 isPassword: false,
                 width: 340,
                 height: 52,
@@ -72,14 +71,13 @@ class ModifyProfileDialogState extends State<ModifyProfileDialog> {
               Align(
                 alignment: Alignment.bottomRight,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Align(
                       alignment: Alignment.bottomRight,
                       child: CustomizedTextButton(
                         text: 'Cancel',
-                        buttonWidth: 132,
+                        buttonWidth: 85,
                         buttonHeight: 39,
                         border: "noBorder",
                         textColor: CustomColor.primaryColor,
@@ -89,15 +87,14 @@ class ModifyProfileDialogState extends State<ModifyProfileDialog> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        //onPressed: Navigator. of(context). pop(GetNumberNotificationDialog()),
-                        // onPressed: Navigator.(GetNumberNotificationDialog(), true),
+
                       ),
                     ),
                     Align(
                       alignment: Alignment.bottomRight,
                       child: CustomizedTextButton(
                         text: 'Save',
-                        buttonWidth: 132,
+                        buttonWidth: 85,
                         buttonHeight: 39,
                         border: "noBorder",
                         textColor: CustomColor.primaryColor,
@@ -107,8 +104,7 @@ class ModifyProfileDialogState extends State<ModifyProfileDialog> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        //onPressed: Navigator. of(context). pop(GetNumberNotificationDialog()),
-                        // onPressed: Navigator.(GetNumberNotificationDialog(), true),
+
                       ),
                     )
                   ],
@@ -116,10 +112,8 @@ class ModifyProfileDialogState extends State<ModifyProfileDialog> {
               )
             ],
           ),
-        ),
       ),
     );
-    // TODO: implement build
-    throw UnimplementedError();
+
   }
 }

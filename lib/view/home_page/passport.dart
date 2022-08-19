@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../reusable_widgets/list_view_builder.dart';
+
 
 class Passport extends StatefulWidget {
-  const Passport({Key? key}) : super(key: key);
+  List<Widget> list;
+  Passport({Key? key,
+  required this.list}) : super(key: key);
 
   @override
   PassportState createState() => PassportState();
@@ -11,11 +15,13 @@ class Passport extends StatefulWidget {
 class PassportState extends State<Passport> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Column(
-      children: const[
+     return SafeArea(
+      child: Container(
+          color: Colors.white,
+          margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+          child:   ListViewBuilder(allDocumentsInDatabase:widget.list,)
+      ),
 
-      ],
-    ));
+    );
   }
 }

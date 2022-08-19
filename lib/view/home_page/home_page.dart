@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lostcard/constant/custom_color.dart';
 import 'package:lostcard/view/home_page/passport.dart';
-import '../register_found_document_page/register_found_document_page.dart';
+import 'package:lostcard/view/reusable_widgets/floating_acion_button_container.dart';
+import '../found_lost_document_page/found_lost_document_page.dart';
+import '../reusable_widgets/custom_card_widget.dart';
 import '../reusable_widgets/customized_search_field.dart';
-import '../signal_document_loss/signal_document_loss_page.dart';
 import 'all.dart';
 import 'cni.dart';
 
@@ -18,6 +19,11 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
 
+
+  String searchValue = '';
+
+  bool isNotClicked = true;
+
   @override
   void dispose() {
     searchController.dispose();
@@ -26,79 +32,135 @@ class HomePageState extends State<HomePage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    List<Widget> list =[
+      CustomCard(
+        documentType: 'Passport',
+        imageName: 'paul.png',
+        address: 'Found At Messassi',
+        date: '10/11/21',
+        ownerName: 'Savio',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const FoundLostDocumentPage(
+                  ownerName: 'Savio',
+                  address: 'Found At Messassi',
+                  date: '10/11/21',
+                  documentState: 'Found document',
+                  documentType: 'Passport',
+                  imageName1: 'paul.png',
+                  imageName2:'paul.png' ,
+                )),
+          );
+        },
+      ),
+
+
+      CustomCard(
+        documentType: 'CNI',
+        imageName: 'paul.png',
+        address: 'Lost at Messassi',
+        date: '10/11/21',
+        ownerName: 'Nasaire',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const FoundLostDocumentPage(
+                  ownerName: 'Savio',
+                  address: 'Lost At Messassi',
+                  date: '10/11/21',
+                  documentState: 'Lost document',
+                  documentType: 'CNI',
+                  imageName1: 'paul.png',
+                  imageName2:'paul.png' ,
+
+                )),
+          );
+        },
+
+      ),
+
+
+
+
+
+
+
+    ];
+
+    List<Widget>cniList = [];
+
+    List<Widget>passportList = [];
+
+
     return Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Stack(
-          fit: StackFit.expand,
-          children: [
-            Positioned(
-              left: 170,
-              bottom: 80,
-              child: SizedBox(
-                width: 190,
-                child: FloatingActionButton.extended(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                          const RegisterFoundDocumentPage()),
-                    );
-                  },
-                  icon: const Icon(
-                    FontAwesomeIcons.plus,
-                    size: 15,
-                  ),
-                  backgroundColor: CustomColor.primaryColor,
-                  label: const Text('I found a document'),
-                ),
-              ),
+        resizeToAvoidBottomInset: false,
+        floatingActionButton: SizedBox(
+          width: 50,
+          height: 50,
+
+          child: FloatingActionButton.large(
+
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const FloatingActionButtonContainer();
+                  });
+            },
+            child: const Icon(
+              FontAwesomeIcons.plus,
+              size: 15,
             ),
-            Positioned(
-              bottom: 20,
-              right: 30,
-              child: SizedBox(
-                width: 190,
-                child: FloatingActionButton.extended(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SignalDocumentLossPage()),
-                    );
-                  },
-                  icon: const Icon(
-                    FontAwesomeIcons.plus,
-                    size: 15,
-                  ),
-                  backgroundColor: const Color(0xFFB880FE),
-                  label: const Text('I lost a document'),
-                ),
-              ),
-            ),
-            // Add more floating buttons if you want
-            // There is no limit
-          ],
+            backgroundColor: CustomColor.primaryColor,
+
+          ),
         ),
         body: SafeArea(
       child: DefaultTabController(
         length: 3,
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
+            toolbarHeight: 77,
             title: Align(
               alignment: Alignment.centerRight,
               child: CustomizedSearchField(
+                controller: searchController,
                 width: 230,
                 height: 49,
+                onTapped: (){
+                  setState(() {
+                    isNotClicked = false;
+
+                  });
+                },
+                onChanged: (value) {
+                    setState(() {
+                      //isNotClicked = false;
+                      searchValue = value;
+                    });
+
+                  }
+
               ),
             ),
             backgroundColor: Colors.white,
-            bottom: TabBar(
+
+            bottom: isNotClicked&&searchController.value.text.isEmpty?TabBar(
               labelColor: CustomColor.primaryColor,
               indicatorColor: CustomColor.secondaryColor,
               labelStyle:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+              const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
               tabs: const [
                 Tab(
                   text: 'All',
@@ -106,15 +168,15 @@ class HomePageState extends State<HomePage> {
                 Tab(text: 'CNI'),
                 Tab(text: 'Passport'),
               ],
-            ),
+            ):null
           ),
-          body: const TabBarView(
+          body: isNotClicked? TabBarView(
             children: [
-              All(),
-              Cni(),
-              Passport(),
+              All(list: list),
+              Cni(list: cniList,),
+              Passport(list: passportList,),
             ],
-          ),
+          ):All(list: list,)
         ),
       ),
     ));

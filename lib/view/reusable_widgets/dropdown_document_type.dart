@@ -22,7 +22,9 @@ class DropDownDocumentTypeState extends State<DropDownDocumentType> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 59,
+      width: 343,
       child: DropdownButtonFormField(
+
 
         decoration: InputDecoration(
           border: OutlineInputBorder(

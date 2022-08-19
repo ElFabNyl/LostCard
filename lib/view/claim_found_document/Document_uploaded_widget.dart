@@ -6,16 +6,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lostcard/constant/custom_color.dart';
 
 
-class PhotoUploadedWidget extends StatelessWidget
+class DocumentUploadedWidget extends StatelessWidget
 {
   final void Function() onPressed;
   final XFile? image;
   final double imageWidth;
   final double imageHeight;
   final IconButton iconButton;
-  const PhotoUploadedWidget({Key? key,
+  const DocumentUploadedWidget({Key? key,
     required this.onPressed,
     required this.image,
     required this.imageWidth,
@@ -26,24 +27,30 @@ class PhotoUploadedWidget extends StatelessWidget
   @override
   Widget build(BuildContext context) {
 
-    return SizedBox(
-          width: imageWidth,
-          height: imageHeight,
+    return Container(
+
+          width: 158,
+          height: 195,
+        decoration: BoxDecoration(
+            color: const Color(0x40FBBEE3),
+            borderRadius: BorderRadius.circular(12)),
 
 
           child:  Stack(
 
             children: [
 
-
               Positioned(
-                //top:20,
-                  //right: 20,
-                  child: Image.file(File(image!.path),height: imageHeight, width: imageWidth,)),
+                  //top:20,
+                    //right: 20,
+                  child: Center(child: Text(image!.name, style: TextStyle(color: CustomColor.primaryColor, fontWeight: FontWeight.bold),)),
+                    //child: Image.file(File(image!.path),height: imageHeight, width: imageWidth,)
+                ),
+              
               Positioned(
                 top:0,
                 right: 0,
-                child: iconButton
+                child: iconButton,
               ) ,
             ],)
       );

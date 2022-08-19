@@ -1,12 +1,18 @@
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lostcard/constant/custom_color.dart';
+import 'package:lostcard/utils/manage_image_and_file.dart';
 import 'package:lostcard/view/nav_bar_pages_manager/bottom_nav_bar_pages_manager.dart';
 import 'package:lostcard/view/register_found_document_page/photo_not_uploaded_widget.dart';
-import 'package:lostcard/view/reusable_widgets/app_part_container_with_back_button.dart';
+import 'package:lostcard/view/register_found_document_page/photo_uploaded_widget.dart';
+import 'package:lostcard/view/reusable_widgets/app_part_container.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_field.dart';
 import 'package:lostcard/view/reusable_widgets/dropdown_document_type.dart';
+
+import '../reusable_widgets/custom_found_notification_dialog.dart';
 
 class RegisterFoundDocumentPage extends StatefulWidget {
   const RegisterFoundDocumentPage({Key? key}) : super(key: key);
@@ -16,30 +22,36 @@ class RegisterFoundDocumentPage extends StatefulWidget {
       RegisterFoundDocumentPageState();
 }
 
-class RegisterFoundDocumentPageState
-    extends State<RegisterFoundDocumentPage> {
+class RegisterFoundDocumentPageState extends State<RegisterFoundDocumentPage> {
 
-  bool isFilledWithImage = false;
+  late XFile? image;
+  final imagePicker = ImagePicker();
+
+  bool isNotFilledWithImageRecto = true;
+
+  bool isNotFilledWithImageVerso = true;
 
   @override
   Widget build(BuildContext context) {
+    var addressController = TextEditingController();
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              AppPartContainerWithBackButton(
-                  partName: "Register Found Document ",
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>  NavBarPagesManager(
-                                selectedIndex: 0,
-                              )),
-                    );
-                  }),
+              AppPartContainer(
+                backButton: IconButton(
+              icon:  Icon(FontAwesomeIcons.angleLeft, color: CustomColor.primaryColor,),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>  NavBarPagesManager(
+                          selectedIndex: 0,
+                        )),
+                  );
+                } ),
+                  partName: "Register Found Document ",),
               Container(
                 margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Column(
@@ -55,24 +67,73 @@ class RegisterFoundDocumentPageState
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          width: 158,
-                          height: 195,
+                        SizedBox(
 
-                          decoration: BoxDecoration(
-                              color: const Color(0xFFFBBEE3),
-                            borderRadius: BorderRadius.circular(12)
+                          child: isNotFilledWithImageRecto? PhotoNotUploadedWidget(
+                            onTap: () async{
+                              image = await ManageImageAndFile().getImageByCamera();
+                              setState(() {
+                                if(image!=null) {
+                                          isNotFilledWithImageRecto = false;
+                                        }
+                                      });
+
+                          } ,): PhotoUploadedWidget(
+                            imageWidth: MediaQuery.of(context).size.width*0.42,
+                            imageHeight: 195,
+                            image: image,
+                            onPressed: () {
+                              setState(() {
+                                isNotFilledWithImageRecto = true;
+
+                              });
+
+                            },
+                              iconButton:IconButton(
+                              icon:  const Icon(FontAwesomeIcons.xmark, color: Colors.blue, size: 15,),
+                              onPressed:  () {
+                                setState(() {
+                                  isNotFilledWithImageRecto = true;
+
+                                });
+
+                              }
                           ),
-                          child: isFilledWithImage?const PhotoNotUploadedWidget():const PhotoNotUploadedWidget()
+                          )
 
                         ),
 
-                        Container(
-                          width: 158,
-                          height: 195,
-                            decoration: BoxDecoration(
-                                color: const Color(0xFFFBBEE3),
-                                borderRadius: BorderRadius.circular(12)
+                        SizedBox(
+                            child: isNotFilledWithImageVerso? PhotoNotUploadedWidget(
+                              onTap: () async{
+                                image = await ManageImageAndFile().getImageByCamera();
+                                setState(() {
+                                  if(image!=null) {
+                                          isNotFilledWithImageVerso = false;
+                                        }
+                                      });
+
+                              } ,): PhotoUploadedWidget(
+                              imageWidth: MediaQuery.of(context).size.width*0.42,
+                              imageHeight: 195,
+                              image: image,
+                              onPressed: () {
+                                setState(() {
+                                  isNotFilledWithImageVerso = true;
+
+                                });
+
+                              } ,
+                              iconButton:IconButton(
+                                  icon:  const Icon(FontAwesomeIcons.xmark, color: Colors.blue, size: 15,),
+                                  onPressed:  () {
+                                    setState(() {
+                                      isNotFilledWithImageVerso = true;
+
+                                    });
+
+                                  }
+                              ),
                             )
 
 
@@ -102,7 +163,7 @@ class RegisterFoundDocumentPageState
                       height: 40,
                     ),
                     CustomizedTextField(
-                      //controller: emailController,
+                      controller: addressController ,
                       labelText: 'Enter address where found',
                       prefixIcon: Icon(FontAwesomeIcons.solidAddressBook,
                           color: CustomColor.primaryColor, size: 15),
@@ -121,7 +182,7 @@ class RegisterFoundDocumentPageState
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: CustomizedTextButton(
-                          text: 'Use google map',
+                          text: 'Use map',
                           buttonWidth: 150,
                           buttonHeight: 40,
                           border: 'noBorder',
@@ -150,7 +211,23 @@ class RegisterFoundDocumentPageState
                       textFontSize: 16,
                       backgroundColor: CustomColor.primaryColor,
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return   FoundNotificationDialog(message: 'Please bring the document to Messassi ICT university'
+                                  ' along with the reward code we will send to you now through sms in order to claim your reward',
+                                onPressed: (){
+                                  Navigator.of(context).pop();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>  NavBarPagesManager(selectedIndex: 0)),
+                                  );
+                                },
+
+                              );
+                            });
+
                       },
                     ),
                   ],

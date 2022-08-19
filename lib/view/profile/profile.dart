@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lostcard/view/nav_bar_pages_manager/bottom_nav_bar_pages_manager.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:lostcard/utils/profile_info_container_clipper.dart';
 import 'package:lostcard/view/profile/modify_profile_dialog.dart';
 import 'package:lostcard/view/reusable_widgets/customized_modify_textfield.dart';
 
 import '../../constant/custom_color.dart';
-import '../reusable_widgets/app_part_container_with_back_button.dart';
+import '../../utils/manage_image_and_file.dart';
+import '../reusable_widgets/app_part_container.dart';
 
 class Profile extends StatefulWidget {
   final String numberOfDocumentsFound;
@@ -18,6 +22,9 @@ class Profile extends StatefulWidget {
 }
 
 class ProfileState extends State<Profile> {
+
+  XFile? image = XFile('');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,110 +32,164 @@ class ProfileState extends State<Profile> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              AppPartContainerWithBackButton(
+              AppPartContainer(
+                backButton: IconButton(icon: const Icon(null), onPressed: (){},),
                   partName: "Profile ",
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => NavBarPagesManager(
-                                selectedIndex: 0,
-                              )),
-                    );
-                  }),
+                 ),
               Container(
                 margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                 child: Column(
                   children: [
-                    Stack(
-                      children: [
-                        const Align(
-                          alignment: Alignment.center,
-                          child: CircleAvatar(
-                              radius: 60.0,
-                              backgroundImage:
-                                  AssetImage('assets/images/nathalie.png')
-                              // child: ClipRRect(
-                              //   child: Image.asset('assets/images/nathalie.png'),
-                              //   borderRadius: BorderRadius.circular(50.0),
-                              // ),
-                              ),
-                        ),
-                        Positioned(
-                          top: 70,
-                          left: 200,
-                          child: Container(
-                            width: 72,
-                            height: 72,
-                            decoration: const BoxDecoration(
-                              color: Color(0x10023607),
-                              shape: BoxShape.circle,
-                            ),
-                            padding: const EdgeInsets.all(10),
-                            child: Align(
-                              alignment: Alignment.bottomRight,
-                              child: IconButton(
-                                icon: Icon(
-                                  FontAwesomeIcons.camera,
-                                  color: CustomColor.primaryColor,
-                                  size: 25,
+                          SizedBox(
+                             height: 160,
+                             //width: 340,
+                               child: Stack(
+                                  children: [
+                                     Positioned(
+                                      left:(MediaQuery.of(context).size.width*0.5)-75,
+                                      //top: MediaQuery.of(context).size.height*0.02,
+                                      child:  CircleAvatar(
+                                            radius: 50.0,
+                                            backgroundColor: Colors.grey,
+                                            foregroundImage: FileImage(File(image!.path)),
+                                            child: Icon(FontAwesomeIcons.solidUser, color: CustomColor.primaryColor,),
+
+
+                                            //AssetImage('assets/images/nathalie.png')
+
+                                        ),
+                                    ),
+
+                                    Positioned(
+                                      top: MediaQuery.of(context).size.height*0.11,
+                                      //alignment: Alignment.topCenter,
+                                      child: ClipPath(
+                                        clipper: ProfileInfoContainerClipper(),
+                                        child: Container(
+
+                                          width: MediaQuery.of(context).size.width-40,
+                                          height: 80,
+                                          padding: const EdgeInsets.all(20),
+                                          decoration: BoxDecoration(borderRadius:BorderRadius.circular(30),
+                                            color: const Color(0xFFFFD8EE),
+
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+
+                                              Column(children: [
+                                                const Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Text(
+                                                      'Documents Found',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                      ),
+                                                    )),
+                                                // SizedBox(width: 20,),
+                                                Text(
+                                                  '15',
+                                                  style: TextStyle(
+                                                      color: CustomColor.primaryColor,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 18),
+                                                )
+
+                                              ],),
+
+                                              Column(children: [
+                                                const Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: Text(
+                                                      'Rewards Gained',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                      ),
+                                                    )),
+                                                // SizedBox(width: 20,),
+                                                Text(
+                                                  '9000 Fcfa',
+                                                  style: TextStyle(
+                                                      color: CustomColor.primaryColor,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 18),
+                                                )
+
+                                              ],)
+
+
+                                            ],
+                                          ),
+
+                                        ),
+
+                                      ),
+                                    ),
+
+
+                                    Positioned(
+                                      top: MediaQuery.of(context).size.height*0.085,
+                                      left: (MediaQuery.of(context).size.width*0.5),
+                                      child: Container(
+                                        width: 30,
+                                        height: 30,
+                                        decoration: const BoxDecoration(
+                                          color: Color(0x20023607),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        //padding: const EdgeInsets.all(10),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: IconButton(
+                                            icon:  Icon(
+                                              FontAwesomeIcons.camera,
+                                              color: CustomColor.primaryColor,
+                                              size: 15,
+                                            ),
+                                            tooltip: 'Take a picture',
+                                            onPressed: () async{
+                                              image = await ManageImageAndFile().getImageByCamera();
+                                              if(image!=null){
+                                                setState(() {
+
+                                                });
+                                              }
+
+
+
+
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+
+
+
+                                  ],
                                 ),
-                                tooltip: 'Take a picture',
-                                onPressed: () {},
-                              ),
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     const SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Number of Documents Found',
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
-                            )),
-                        // SizedBox(width: 20,),
-                        Text(
-                          '15',
-                          style: TextStyle(
-                              color: CustomColor.primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Number of rewards_history gained',
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
-                            )),
-                        // SizedBox(width: 20,),
-                        Text(
-                          '10',
-                          style: TextStyle(
-                              color: CustomColor.primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
-                        )
-                      ],
-                    ),
+
                     const SizedBox(
                       height: 20,
                     ),
@@ -137,7 +198,7 @@ class ProfileState extends State<Profile> {
                         child: Text(
                           'Name',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 14, fontWeight: FontWeight.bold),
                         )),
                     CustomizedModifyTextField(
 
@@ -168,7 +229,7 @@ class ProfileState extends State<Profile> {
                         child: Text(
                           'Email',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 14, fontWeight: FontWeight.bold),
                         )),
                     CustomizedModifyTextField(
 
@@ -199,7 +260,7 @@ class ProfileState extends State<Profile> {
                         child: Text(
                           'Password',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 14, fontWeight: FontWeight.bold),
                         )),
                     CustomizedModifyTextField(
 
@@ -229,7 +290,7 @@ class ProfileState extends State<Profile> {
                         child: Text(
                           'Phone Number',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 14, fontWeight: FontWeight.bold),
                         )),
                     CustomizedModifyTextField(
 
