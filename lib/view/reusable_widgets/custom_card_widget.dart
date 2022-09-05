@@ -37,8 +37,8 @@ class CustomCardState extends State<CustomCard> {
           Container(
 
             width: 340,
-            height: 157,
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            height: 177,
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
             decoration:  BoxDecoration(
 
                 color: Colors.white,
@@ -52,10 +52,7 @@ class CustomCardState extends State<CustomCard> {
                   SizedBox(
                     width:130 ,
                     height:123 ,
-                    child: Image(
-                      image: AssetImage(
-                          'assets/images/' + widget.imageName),
-                    ),
+                    child: Image.network(widget.imageName, alignment: Alignment.center,),
 
                   ),
 

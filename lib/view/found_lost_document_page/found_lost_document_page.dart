@@ -8,22 +8,22 @@ import '../nav_bar_pages_manager/bottom_nav_bar_pages_manager.dart';
 
 class FoundLostDocumentPage extends StatefulWidget {
   final String documentState;
-  final String imageName1;
-  final String imageName2;
+  final List<String> imageList;
   final String address;
   final String date;
   final String documentType;
   final String ownerName;
+  final String idDocument;
 
   const FoundLostDocumentPage({
     Key? key,
     required this.documentState,
-    required this.imageName1,
-    required this.imageName2,
+    required this.imageList,
     required this.address,
     required this.date,
     required this.documentType,
     required this.ownerName,
+    required this.idDocument,
   }) : super(key: key);
 
   @override
@@ -38,7 +38,8 @@ class FoundLostDocumentPageState extends State<FoundLostDocumentPage> {
 
   @override
   Widget build(BuildContext context) {
-    List imgList = ['assets/images/file_searching.png', 'assets/images/paul.png'];
+    // List imgList = [widget.imageName1
+    //   , widget.imageName2];
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -77,7 +78,7 @@ class FoundLostDocumentPageState extends State<FoundLostDocumentPage> {
                   color: const Color(0xFFFFE3F4),
                   child:  CarouselSlider(
 
-                    items: imgList.map((imgUrl) {
+                    items: widget.imageList.map((imgUrl) {
                       return Builder(
                         builder: (BuildContext context) {
                           return Container(
@@ -86,7 +87,7 @@ class FoundLostDocumentPageState extends State<FoundLostDocumentPage> {
                             decoration: const BoxDecoration(
                               color: Colors.green,
                             ),
-                            child: Image.asset(
+                            child: Image.network(
                               imgUrl,
                               fit: BoxFit.fill,
                             ),
@@ -202,20 +203,19 @@ class FoundLostDocumentPageState extends State<FoundLostDocumentPage> {
                               backgroundColor: CustomColor.primaryColor,
                               onPressed: () {
 
-                                if(widget.documentState.compareTo('Found document')==0){
+                                if(widget.documentState.compareTo('Found Document')==0){
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                          const ClaimFoundDocument()));
+                                            ClaimFoundDocument(idDocument: widget.idDocument,)));
 
                                 }
                                 else{
                                   Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                  builder: (context) =>
-                                  const ClaimLostDocument()));
+                                  builder: (context) => ClaimLostDocument(idDocument: widget.idDocument)));
 
                                   }
 

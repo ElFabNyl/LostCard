@@ -208,7 +208,10 @@ class RegisterLastStepState extends State<RegisterLastStep> {
                                     setData,
                                     context,
                                     widget.email,
-                                    widget.password);
+                                    widget.password,
+                                    enterNameController.value.text,
+
+                            );
                           } else {
                             CustomSnackBar().showCustomSnackBar(
                                 context, 'A number cannot contain characters');

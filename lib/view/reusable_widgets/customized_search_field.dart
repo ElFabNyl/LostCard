@@ -48,8 +48,8 @@ class CustomizedSearchFieldState extends State<CustomizedSearchField> {
               )),
           suffixIcon: IconButton(
             onPressed: widget.onPressed,
-            icon: Icon(FontAwesomeIcons.searchengin,
-                color: CustomColor.primaryColor, size: 15),
+            icon: Icon(FontAwesomeIcons.x,
+                color: CustomColor.primaryColor, size: 10),
           ),
           hintText: 'Search by Name',
         ),

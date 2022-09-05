@@ -6,9 +6,17 @@ import '../reusable_widgets/customized_text_field.dart';
 class ModifyProfileDialog extends StatefulWidget {
   final String title;
   final String hintText;
+  final TextEditingController updateController;
+  final void Function()onCancelPressed;
+  final void Function()onSavePressed;
 
   const ModifyProfileDialog(
-      {Key? key, required this.title, required this.hintText})
+      {Key? key, required this.title,
+        required this.hintText,
+        required this.onCancelPressed,
+        required this.onSavePressed,
+        required this.updateController,
+      })
       : super(key: key);
 
   @override
@@ -54,7 +62,7 @@ class ModifyProfileDialogState extends State<ModifyProfileDialog> {
                 height: 20,
               ),
               CustomizedTextField(
-                //controller: emailController,
+                controller: widget.updateController,
                 hintText: widget.hintText,
                 prefixIcon: const Icon(null),
                 suffixIcon: const Icon(null),
@@ -84,9 +92,7 @@ class ModifyProfileDialogState extends State<ModifyProfileDialog> {
                         textFontSize: 16,
                         backgroundColor: CustomColor.primaryColor,
 
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                        onPressed: widget.onCancelPressed,
 
                       ),
                     ),
@@ -101,9 +107,7 @@ class ModifyProfileDialogState extends State<ModifyProfileDialog> {
                         textFontSize: 16,
                         backgroundColor: CustomColor.primaryColor,
 
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                        onPressed:widget.onSavePressed,
 
                       ),
                     )

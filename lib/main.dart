@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lostcard/view/nav_bar_pages_manager/bottom_nav_bar_pages_manager.dart';
 import 'package:lostcard/view/onboarding_screens/onboarding_page_searching.dart';
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -15,9 +16,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return   const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: NavBarPagesManager(selectedIndex: 0)
+        home: OnboardingPageSearching()
 
 
 

@@ -4,8 +4,11 @@ import '../reusable_widgets/list_view_builder.dart';
 
 class Cni extends StatefulWidget {
   List<Widget> list;
+  bool isCniFound;
    Cni({Key? key,
-  required this.list}) : super(key: key);
+  required this.list,
+   required this.isCniFound,
+   }) : super(key: key);
 
   @override
   CniState createState() => CniState();
@@ -18,8 +21,8 @@ class CniState extends State<Cni> {
       child: Container(
           color: Colors.white,
           margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-          child:   ListViewBuilder(allDocumentsInDatabase:widget.list,)
-      ),
+          child:  !widget.isCniFound? ListViewBuilder(allDocumentsInDatabase:widget.list,)
+              :const Center(child: Text('No items'))),
 
     );
   }

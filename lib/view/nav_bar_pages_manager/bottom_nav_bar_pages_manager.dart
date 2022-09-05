@@ -22,9 +22,7 @@ class NavBarPagesManagerState extends State<NavBarPagesManager> {
   var widgetOptions = [
     const HomePage(),
     const RewardsHistory(),
-    const Profile(
-      numberOfDocumentsFound: '',
-    )
+    const Profile()
   ];
 
   void _onItemTapped(int index) {
@@ -37,7 +35,6 @@ class NavBarPagesManagerState extends State<NavBarPagesManager> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: CustomColor.primaryColor,
         items: const [

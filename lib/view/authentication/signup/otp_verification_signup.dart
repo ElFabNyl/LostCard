@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:flutter_countdown_timer/index.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lostcard/constant/custom_color.dart';
@@ -9,6 +8,8 @@ import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_field.dart';
 import 'package:flutter/material.dart';
 
+import '../../../controllers/user_controller.dart';
+import '../../../model/user.dart';
 import '../../reusable_widgets/custom_snack_bar.dart';
 import '../../reusable_widgets/loading_indicator.dart';
 
@@ -17,12 +18,14 @@ class OtpVerificationSignup extends StatefulWidget {
   final String email;
   final String password;
   final String phoneNumber;
+  final String name;
 
   OtpVerificationSignup(
       {this.verificationId,
       required this.email,
       required this.password,
       required this.phoneNumber,
+      required this.name,
       Key? key})
       : super(key: key);
 
@@ -35,7 +38,8 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
 
   int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 60;
 
-  //CountdownTimerController timerController = CountdownTimerController(endTime: DateTime.now().millisecondsSinceEpoch + 1000 * 120);
+  CountdownTimerController timerController = CountdownTimerController(
+      endTime: DateTime.now().millisecondsSinceEpoch + 1000 * 120);
 
   bool visible = false;
 
@@ -43,7 +47,11 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
 
   @override
   void dispose() {
-    //timerController.dispose();
+    if (mounted) {
+      setState(() {
+        timerController.dispose();
+      });
+    }
 
     super.dispose();
   }
@@ -178,7 +186,7 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
 
                           await PhoneOTPVerification(FirebaseAuth.instance)
                               .verifyPhone(widget.phoneNumber, setData, context,
-                                  widget.email, widget.password);
+                                  widget.email, widget.password, widget.name);
                         },
                       ),
                     ),
@@ -203,11 +211,27 @@ class OtpVerificationSignupState extends State<OtpVerificationSignup> {
                       LoadingIndicator(this.context).startLoading();
                       await PhoneOTPVerification(FirebaseAuth.instance)
                           .verifyOTP(
-                              widget.verificationId,
-                              enterCodeController.value.text,
-                              widget.email,
-                              widget.password,
-                              this.context);
+                        widget.verificationId,
+                        enterCodeController.value.text,
+                        widget.email,
+                        widget.password,
+                        this.context,
+                      );
+
+                      final user = UserModel(
+                          idUser: FirebaseAuth.instance.currentUser!.uid,
+                          name: widget.name,
+                          emailAddress: widget.email,
+                          password: widget.password,
+                          phoneNumber: widget.phoneNumber,
+                          profilePicture: '',
+                          documentsFound: '0',
+                          rewardsGained: '0'
+
+                      );
+
+
+                      await UserController().addUser(user);
                     } else {
                       CustomSnackBar().showCustomSnackBar(
                           context, 'OTP code does not contain characters');

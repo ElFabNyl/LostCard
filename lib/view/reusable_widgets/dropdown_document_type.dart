@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class DropDownDocumentType extends StatefulWidget {
-  const DropDownDocumentType({
+  void Function(String?)? onChanged;
+  String dropDownValue;
+
+  DropDownDocumentType({
+    required this.onChanged,
+    required this.dropDownValue,
     Key? key,
   }) : super(key: key);
 
@@ -10,7 +15,6 @@ class DropDownDocumentType extends StatefulWidget {
 }
 
 class DropDownDocumentTypeState extends State<DropDownDocumentType> {
-  String dropDownValue = 'Select Document type';
   var items = [
     'Select Document type',
     'CNI',
@@ -24,29 +28,21 @@ class DropDownDocumentTypeState extends State<DropDownDocumentType> {
       height: 59,
       width: 343,
       child: DropdownButtonFormField(
-
-
         decoration: InputDecoration(
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30.0),
-              borderSide: const  BorderSide(
-                //color: CustomColor.primaryColor,
-              )),
+              borderSide: const BorderSide(
+                  )),
         ),
-
-
-          value: dropDownValue,
-          items: items.map((String items) {
-            return DropdownMenuItem(
-              value: items,
-              child: Text(items),
-            );
-          }).toList(),
-          onChanged: (String? newValue) {
-            setState(() {
-              dropDownValue = newValue!;
-            });
-          }),
+        value: widget.dropDownValue,
+        items: items.map((String items) {
+          return DropdownMenuItem(
+            value: items,
+            child: Text(items),
+          );
+        }).toList(),
+        onChanged: widget.onChanged,
+      ),
     );
   }
 }

@@ -32,6 +32,10 @@ class SignInState extends State<SignIn> {
 
   var passwordErrorText;
 
+  var isEmail ;
+
+  var doesPasswordContainsSpecialCharater;
+
   bool isEmailEmpty = true;
   bool isPasswordEmpty = true;
 
@@ -49,6 +53,12 @@ class SignInState extends State<SignIn> {
 
   String? get _errorText {
     // at any time, we can get the text from _controller.value.text
+    isEmail = ValidateEmailAddress()
+        .isEmailValid(emailController.value.text);
+
+    doesPasswordContainsSpecialCharater = ValidatePassword()
+        .isStrongPassword(passwordController.value.text);
+
     emailText = emailController.value.text;
     passwordText = passwordController.value.text;
     // Note: you can do your own custom validation here
@@ -58,6 +68,11 @@ class SignInState extends State<SignIn> {
       passwordErrorText = "Can't be empty";
       return emailErrorText;
     }
+    if (emailText.isEmpty ) {
+      emailErrorText = "Can't be empty";
+      return emailErrorText;
+    }
+
     if (passwordText.isEmpty) {
       passwordErrorText = "Can't be empty";
       return passwordErrorText;
@@ -65,6 +80,18 @@ class SignInState extends State<SignIn> {
     if (passwordText.length <= 7) {
       passwordErrorText = "Too short, enter at least 8 characters";
       return emailErrorText;
+    }
+
+    if (isEmail==false) {
+      print('jhhhhhhhhhhhhhhh'+ValidateEmailAddress()
+          .isEmailValid(emailController.value.text) .toString());
+      emailErrorText = 'Email address invalid, Please enter a valid email address!';
+      return emailErrorText;
+    }
+
+    if(doesPasswordContainsSpecialCharater==false){
+      passwordErrorText = 'Include 1 or more special character! Ex:@, #, ",*,&...';
+
     }
     return null;
   }
@@ -118,9 +145,18 @@ class SignInState extends State<SignIn> {
                   height: 52,
                   errorText: isEmailEmpty ? emailErrorText : null,
                   onChanged: (_) {
-                    emailController.value.text.isEmpty
-                        ? isEmailEmpty = true
-                        : isEmailEmpty = false;
+
+                    if( emailController.value.text.isEmpty){
+                      isEmailEmpty = true;
+                      emailErrorText = "Can't be empty";
+                    }
+                    else
+                      {
+                        isEmailEmpty = false;
+                      }
+
+
+
 
                     setState(() {});
                   },
@@ -144,7 +180,7 @@ class SignInState extends State<SignIn> {
                   isPassword: true,
                   width: 350,
                   height: 52,
-                  errorText: (isPasswordEmpty || passwordText.length <= 7)
+                  errorText: (isPasswordEmpty || passwordText.length <= 7||doesPasswordContainsSpecialCharater==false)
                       ? passwordErrorText
                       : null,
                   onChanged: (value) {
@@ -167,7 +203,7 @@ class SignInState extends State<SignIn> {
                     buttonWidth: 150,
                     buttonHeight: 40,
                     border: 'noBorder',
-                    textColor: const Color(0xFF133E04),
+                    textColor: CustomColor.primaryColor,
                     textFontSize: 16,
                     backgroundColor: CustomColor.primaryColor,
                     textAlignment: TextAlign.end,
@@ -231,11 +267,14 @@ class SignInState extends State<SignIn> {
                             'Your password is not strong enough, include at least 1 special character! Ex:@, #, ",*,&...');
                       }
                     } else {
-                      CustomSnackBar().showCustomSnackBar(context,
-                          'Email address invalid, Please enter a valid email address!');
+                      isEmailEmpty = true;
+                      _errorText;
+                      setState(() {});
+
                     }
                   } else {
                     null;
+                    isEmailEmpty = true;
                     _errorText;
                     setState(() {});
                   }

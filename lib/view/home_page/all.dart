@@ -5,8 +5,12 @@ import '../reusable_widgets/custom_card_widget.dart';
 
 class All extends StatefulWidget {
   List<Widget> list;
+  bool isDocumentsFound;
   All({Key? key,
-  required this.list}) : super(key: key);
+  required this.list,
+    required this.isDocumentsFound
+
+  }) : super(key: key);
 
   @override
   AllState createState() => AllState();
@@ -24,8 +28,8 @@ class AllState extends State<All> {
       child: Container(
         color: Colors.white,
         margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-        child:   ListViewBuilder(allDocumentsInDatabase:widget.list,)
-          ),
+        child:  !widget.isDocumentsFound? ListViewBuilder(allDocumentsInDatabase:widget.list,)
+            :const Center(child: Text('No items')))
 
     );
   }
