@@ -8,8 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lostcard/constant/custom_color.dart';
 import 'package:lostcard/utils/manage_image_and_file.dart';
 import 'package:lostcard/view/nav_bar_pages_manager/bottom_nav_bar_pages_manager.dart';
-import 'package:lostcard/view/register_found_document_page/photo_not_uploaded_widget.dart';
-import 'package:lostcard/view/register_found_document_page/photo_uploaded_widget.dart';
+import 'package:lostcard/view/reusable_widgets/photo_not_uploaded_widget.dart';
+import 'package:lostcard/view/reusable_widgets/photo_uploaded_widget.dart';
 import 'package:lostcard/view/reusable_widgets/app_part_container.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_field.dart';
@@ -30,6 +30,7 @@ class RegisterFoundDocumentPage extends StatefulWidget {
 class RegisterFoundDocumentPageState extends State<RegisterFoundDocumentPage> {
 
   String dropDownValue = 'Select Document type';
+
 
   DateTime dateToday = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day) ;
 
@@ -168,7 +169,12 @@ class RegisterFoundDocumentPageState extends State<RegisterFoundDocumentPage> {
                                     size: 15,),
                                   onPressed: () {
                                     setState(() {
+
                                       isNotFilledWithImageRecto = true;
+                                      if(isNotFilledWithImageRecto==false){
+                                        listOfAuthenticationFiles.removeAt(0);
+                                      }
+
                                     });
                                   }
                               ),
@@ -244,6 +250,9 @@ class RegisterFoundDocumentPageState extends State<RegisterFoundDocumentPage> {
                                   onPressed: () {
                                     setState(() {
                                       isNotFilledWithImageVerso = true;
+                                      if(isNotFilledWithImageRecto==false){
+                                        listOfAuthenticationFiles.removeAt(1);
+                                      }
                                     });
                                   }
                               ),
@@ -337,7 +346,8 @@ class RegisterFoundDocumentPageState extends State<RegisterFoundDocumentPage> {
                             listOfFiles: finalList,
                             documentType: dropDownValue,
                             registrationDate: registrationDate,
-                            documentState:'Found Document' );
+                            documentState:'Found Document',
+                            transactionStatus: 'Pending' );
 
                         await DocumentController()
                             .addFoundDocument(documentModel);

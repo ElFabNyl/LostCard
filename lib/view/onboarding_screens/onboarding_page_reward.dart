@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:lostcard/utils/manage_shared_preferences.dart';
 import '../../constant/custom_color.dart';
 import '../reusable_widgets/customized_text_button.dart';
 import 'package:lostcard/view/authentication/signin/signin.dart';
 
-class OnboardingPageReward extends StatelessWidget {
+class OnboardingPageReward extends StatefulWidget {
   const OnboardingPageReward({Key? key}) : super(key: key);
+
+  OnboardingPageRewardState createState() => OnboardingPageRewardState();
+}
+
+
+
+  class OnboardingPageRewardState extends State<OnboardingPageReward> {
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +37,12 @@ class OnboardingPageReward extends StatelessWidget {
                     backgroundColor: CustomColor.primaryColor,
                     textAlignment: TextAlign.end,
                     onPressed: () {
-                      Navigator.push(
+
+                      Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const SignIn()),
+                        (Route<dynamic>route) => false,
                       );
                     },
                   ),
@@ -65,11 +75,14 @@ class OnboardingPageReward extends StatelessWidget {
               const SizedBox(
                 height: 40,
               ),
-              const Align(
-                alignment: Alignment.bottomRight,
-                child: Image(
-                  image:
-                      AssetImage('assets/images/image_onboarding_screen2.png'),
+              const SizedBox(
+                height: 250,
+                child:  Align(
+                  alignment: Alignment.bottomRight,
+                  child: Image(
+                    image:
+                        AssetImage('assets/images/image_onboarding_screen2.png'),
+                  ),
                 ),
               ),
               const SizedBox(
@@ -84,10 +97,15 @@ class OnboardingPageReward extends StatelessWidget {
                 textFontSize: 18,
                 backgroundColor: CustomColor.primaryColor,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SignIn()),
-                  );
+                  ManageSharedPreferences().setSeenOnBoardingScreens(true);
+
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SignIn()),
+                          (Route<dynamic>route) => false,
+                    );
+
+
                 },
               ),
             ],

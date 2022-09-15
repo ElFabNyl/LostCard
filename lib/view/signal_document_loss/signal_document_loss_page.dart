@@ -15,7 +15,7 @@ import '../../controllers/document_controller.dart';
 import '../../model/document_model.dart';
 import '../../utils/manage_image_and_file.dart';
 import '../claim_found_document/Document_uploaded_widget.dart';
-import '../register_found_document_page/photo_uploaded_widget.dart';
+import '../reusable_widgets/photo_uploaded_widget.dart';
 import '../reusable_widgets/choose_upload_medium_dialog.dart';
 import '../reusable_widgets/custom_found_notification_dialog.dart';
 import '../reusable_widgets/dropdown_document_type.dart';
@@ -352,7 +352,7 @@ class SignalDocumentLossPageState extends State<SignalDocumentLossPage> {
                                 0) {
                               final ref = FirebaseStorage.instance
                                   .ref()
-                                  .child("authenticationFiles")
+                                  .child("lostDocumentAuthenticationFiles")
                                   .child("signalDocumentLoss" +
                                       FirebaseAuth.instance.currentUser!.uid +
                                       ' ' +
@@ -363,7 +363,7 @@ class SignalDocumentLossPageState extends State<SignalDocumentLossPage> {
                             } else {
                               final ref = FirebaseStorage.instance
                                   .ref()
-                                  .child("authenticationFiles")
+                                  .child("lostDocumentAuthenticationFiles")
                                   .child("signalDocumentLoss" +
                                       FirebaseAuth.instance.currentUser!.uid +
                                       ' ' +
@@ -387,7 +387,8 @@ class SignalDocumentLossPageState extends State<SignalDocumentLossPage> {
                                 name: yourNameController.value.text,
                                 address:
                                     'Lost at: ' + addressController.value.text,
-                                documentState: 'Lost Document');
+                                documentState: 'Lost Document',
+                                transactionStatus: 'Pending');
 
                         await DocumentController()
                             .addFoundDocument(documentModel);

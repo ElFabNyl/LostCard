@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,7 @@ import 'package:lostcard/model/user.dart';
 import 'package:lostcard/utils/profile_info_container_clipper.dart';
 import 'package:lostcard/view/profile/modify_profile_dialog.dart';
 import 'package:lostcard/view/reusable_widgets/customized_modify_textfield.dart';
+import 'package:lostcard/view/reusable_widgets/loading_indicator.dart';
 
 import '../../constant/custom_color.dart';
 import '../../controllers/user_controller.dart';
@@ -31,15 +33,57 @@ class ProfileState extends State<Profile> {
 
   XFile? image1 = XFile('');
   DocumentSnapshot? user;
+  User? users = FirebaseAuth.instance.currentUser;
+
+  String? userName;
+  String? email;
+  String? phoneNumber;
+  String? profilePicture;
+  bool isProfilePictureNotUpdated = true;
+  bool visible = false;
+
+
+
+
+  QuerySnapshot? numberOfFoundDocuments;
 
   @override
   void initState() {
+
     // TODO: implement initState
     UserController().getUser().get().then((result) {
       setState(() {
         user = result;
       });
     });
+
+    if(users!=null&&user!=null){
+      UserController().getUserNumberOfFoundDocuments(users!.uid).then((results) {
+
+        setState(() {
+          numberOfFoundDocuments = results;
+          // userName =  UserModel.fromJson(user!.data()
+          // as Map<String, dynamic>)
+          //     .name;
+          // email =  UserModel.fromJson(user!.data()
+          // as Map<String, dynamic>)
+          //     .emailAddress;
+          // phoneNumber =  UserModel.fromJson(user!.data()
+          // as Map<String, dynamic>)
+          //     .phoneNumber;
+          // profilePicture =  UserModel.fromJson(user!.data()
+          // as Map<String, dynamic>)
+          //     .profilePicture;
+        });
+      },);
+
+
+
+
+    }
+
+
+
     super.initState();
   }
 
@@ -47,8 +91,43 @@ class ProfileState extends State<Profile> {
   //   this.image1 = await
   // }
 
+
+
   @override
   Widget build(BuildContext context) {
+
+    if(users!=null&&user!=null){
+
+        setState(() {
+         // numberOfFoundDocuments = results;
+          userName =  UserModel.fromJson(user!.data()
+          as Map<String, dynamic>)
+              .name;
+          email =  UserModel.fromJson(user!.data()
+          as Map<String, dynamic>)
+              .emailAddress;
+          phoneNumber =  UserModel.fromJson(user!.data()
+          as Map<String, dynamic>)
+              .phoneNumber;
+          profilePicture =  UserModel.fromJson(user!.data()
+          as Map<String, dynamic>)
+              .profilePicture;
+        });
+
+
+
+
+
+    }
+
+
+
+    if(numberOfFoundDocuments!=null){
+      print('I am so happy');
+      UserController().updateNumberOfDocumentsFound(users!.uid, numberOfFoundDocuments!.size.toString());
+
+      UserController().updateAmountOfRewardsGained(users!.uid,(numberOfFoundDocuments!.size*500).toString());
+    }
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -75,23 +154,24 @@ class ProfileState extends State<Profile> {
                                 (MediaQuery.of(context).size.width * 0.5) - 75,
                             //top: MediaQuery.of(context).size.height*0.02,
                             child: CircleAvatar(
+                              key: ValueKey(Random().nextInt(100)),
                               radius: 50.0,
                               backgroundColor: Colors.grey,
                               foregroundImage: FileImage(File(image1!.path)),
                               backgroundImage:user!=null&&(UserModel.fromJson(user?.data()
                             as Map<String, dynamic>)
-                              .profilePicture).compareTo('')!=0? NetworkImage(
-                                UserModel.fromJson(user!.data()
-                                as Map<String, dynamic>)
-                                    .profilePicture,
+                                .profilePicture).compareTo('')!=0&&profilePicture!=null? NetworkImage(
+                                profilePicture!
 
                               ):null ,
                               child:  user!=null&&(UserModel.fromJson(user?.data()
                               as Map<String, dynamic>)
-                                  .profilePicture).compareTo('')==0?Icon(
+                                  .profilePicture).compareTo('')==0&&isProfilePictureNotUpdated?Icon(
                                 FontAwesomeIcons.solidUser,
                                 color: CustomColor.primaryColor,
-                              ):null,
+                              ):Visibility(
+                                visible: visible,
+                                  child: Center(child: CircularProgressIndicator(color: CustomColor.primaryColor,),)),
 
                               //AssetImage('assets/images/nathalie.png')
                             ),
@@ -125,7 +205,7 @@ class ProfileState extends State<Profile> {
                                             )),
                                         // SizedBox(width: 20,),
                                         Align(
-                                          child:user!=null? Text(
+                                          child:user!=null?Text(
                                             UserModel.fromJson(user!.data()
                                             as Map<String, dynamic>)
                                                 .documentsFound,
@@ -152,7 +232,7 @@ class ProfileState extends State<Profile> {
                                           child:user!=null?Text(
                                               UserModel.fromJson(user!.data()
                                               as Map<String, dynamic>)
-                                                  .rewardsGained,
+                                                  .rewardsGained+' Fcfa',
                                             style: TextStyle(
                                                 color: CustomColor.primaryColor,
                                                 fontWeight: FontWeight.bold,
@@ -187,15 +267,25 @@ class ProfileState extends State<Profile> {
                                   ),
                                   tooltip: 'Take a picture',
                                   onPressed: () async {
+                                    //imageCache.clear();
                                     var image = await ManageImageAndFile()
                                         .getImageByCamera();
                                     if (image != null) {
+                                      setState((){
+                                        isProfilePictureNotUpdated = false;
+                                        visible = true;
+                                      });
 
                                       final ref = FirebaseStorage.instance.ref().child("usersProfileImages").child(DateTime.now().toString()+FirebaseAuth.instance.currentUser!.uid+".jpg");
                                       await ref.putFile(File(image.path));
                                       var imageUrl = await ref.getDownloadURL();
                                       await UserController().updateUserProfilePicture(FirebaseAuth.instance.currentUser!.uid, imageUrl);
-                                      setState(() {});
+                                      setState(() {
+
+                                        profilePicture = imageUrl;
+                                        visible = false;
+
+                                      });
                                     }
 
                                   },
@@ -228,9 +318,7 @@ class ProfileState extends State<Profile> {
                           size: 15,
                         ),
                         hintText: user != null
-                            ? UserModel.fromJson(
-                                    user!.data() as Map<String, dynamic>)
-                                .name
+                            ? userName
                             : null,
                         onPressed: () {
                           showDialog(
@@ -245,9 +333,14 @@ class ProfileState extends State<Profile> {
                                           .name
                                       : '', 
                                   onSavePressed: () async{
+
                                     await UserController().updateUserName(FirebaseAuth.instance.currentUser!.uid, updateController.value.text);
-                                    
+                                    setState((){
+                                      userName =  updateController.value.text;
+                                    });
+
                                     Navigator.of(context).pop();
+
                                   }, 
                                   onCancelPressed: () {
                                     Navigator.of(context).pop();
@@ -271,9 +364,7 @@ class ProfileState extends State<Profile> {
                         width: 350,
                         height: 52,
                         hintText: user != null
-                            ? UserModel.fromJson(
-                                    user!.data() as Map<String, dynamic>)
-                                .emailAddress
+                            ? email
                             : null,
                         prefixIcon: Icon(
                           FontAwesomeIcons.solidUser,
@@ -352,9 +443,7 @@ class ProfileState extends State<Profile> {
                         width: 350,
                         height: 52,
                         hintText: user != null
-                            ? UserModel.fromJson(
-                                    user!.data() as Map<String, dynamic>)
-                                .phoneNumber
+                            ? phoneNumber
                             : null,
                         labelText: 'Phone Number',
                         prefixIcon: Icon(
@@ -375,8 +464,12 @@ class ProfileState extends State<Profile> {
                                       : '',
                                   title: 'Phone Number',
                                   onSavePressed: () async{
+
                                     await  UserController().updateUserPhoneNumber(FirebaseAuth.instance.currentUser!.uid, updateController.value.text);
-                                    setState((){});
+                                    setState((){
+                                      phoneNumber = updateController.value.text;
+                                    });
+
                                   Navigator.of(context).pop();
                                 },
                                   onCancelPressed: () {

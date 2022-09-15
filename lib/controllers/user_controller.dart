@@ -18,6 +18,18 @@ class UserController {
         .doc(FirebaseAuth.instance.currentUser!.uid);
   }
 
+  getUserNumberOfFoundDocuments(String idUser) async {
+    return await FirebaseFirestore.instance.collection('allDocuments').where("idUser", isEqualTo: idUser).where("transactionStatus", isEqualTo: "Complete").get()
+        .catchError((error){
+      print(error);
+
+    });
+
+
+  }
+
+
+
   updateUserName(String idDocument, String name){
     FirebaseFirestore.instance.collection("users").doc(idDocument).update({"name": name}).then(
             (value) => print("DocumentSnapshot successfully updated!"),
@@ -41,6 +53,20 @@ class UserController {
 
   updateUserProfilePicture(String idDocument, String profilePicture){
     FirebaseFirestore.instance.collection("users").doc(idDocument).update({"profilePicture": profilePicture}).then(
+            (value) => print("DocumentSnapshot successfully updated!"),
+        onError: (e) => print("Error updating document $e"));
+
+  }
+
+  updateNumberOfDocumentsFound(String idUser, String numberOfDocumentsFound){
+    FirebaseFirestore.instance.collection("users").doc(idUser).update({"documentsFound": numberOfDocumentsFound}).then(
+            (value) => print("DocumentSnapshot successfully updated!"),
+        onError: (e) => print("Error updating document $e"));
+
+  }
+
+  updateAmountOfRewardsGained(String idUser, String rewardsGained){
+    FirebaseFirestore.instance.collection("users").doc(idUser).update({"rewardsGained": rewardsGained}).then(
             (value) => print("DocumentSnapshot successfully updated!"),
         onError: (e) => print("Error updating document $e"));
 

@@ -15,20 +15,23 @@ class ListViewBuilder extends StatelessWidget{
     if(allDocumentsInDatabase.isNotEmpty){
 
 
-      return ListView.separated(
-        //shrinkWrap:true,
-        //padding: const EdgeInsets.all(8),
-        itemCount: allDocumentsInDatabase.length,
-        itemBuilder: (BuildContext context, int index) {
-          return allDocumentsInDatabase[index];
-        }, separatorBuilder: (BuildContext context, int index) { return const Divider();},
+      Center(child: CircularProgressIndicator(backgroundColor: CustomColor.primaryColor,));
+      return Scrollbar(
+        child: ListView.separated(
+          //shrinkWrap:true,
+          //padding: const EdgeInsets.all(8),
+          itemCount: allDocumentsInDatabase.length,
+          itemBuilder: (BuildContext context, int index) {
+            return allDocumentsInDatabase[index];
+          }, separatorBuilder: (BuildContext context, int index) { return const Divider();},
 
+        ),
       );
       
     }
     else{
 
-      return  Center(child: CircularProgressIndicator(backgroundColor: CustomColor.primaryColor,));
+      return  Center(child: CircularProgressIndicator(color: CustomColor.primaryColor,));
       
     }
     

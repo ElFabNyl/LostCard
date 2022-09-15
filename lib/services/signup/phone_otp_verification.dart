@@ -87,10 +87,11 @@ class PhoneOTPVerification {
       // CustomSnackBar()
       //     .showCustomSnackBar(context, 'you have signed up Successfully',);
 
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
             builder: (context) => NavBarPagesManager(selectedIndex: 0)),
+          (Route<dynamic>route) => false,
       );
     } on FirebaseAuthException catch (e) {
       LoadingIndicator(context).stopLoading();

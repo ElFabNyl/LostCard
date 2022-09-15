@@ -115,7 +115,7 @@ class SignInState extends State<SignIn> {
                 ),
               ),
               const SizedBox(
-                height: 50,
+                height: 20,
               ),
               Text(
                 "Sign in",
@@ -248,12 +248,13 @@ class SignInState extends State<SignIn> {
                           if (newUser != null) {
                             LoadingIndicator(this.context).stopLoading();
 
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
                                        NavBarPagesManager(
                                           selectedIndex: 0)),
+                                  (Route<dynamic>route) => false,
                             );
                           }
                         } on FirebaseAuthException catch (e) {
@@ -332,10 +333,12 @@ class SignInState extends State<SignIn> {
                     await GoogleSignInAuth(FirebaseAuth.instance)
                         .googleSignIn()
                         .then((_) {
-                      Navigator.push(
+                      Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomePage()),
+                            builder: (context) =>  NavBarPagesManager(
+                                selectedIndex: 0)),
+                            (Route<dynamic>route) => false,
                       );
                     });
                   } on FirebaseAuthException catch (e) {
@@ -366,10 +369,13 @@ class SignInState extends State<SignIn> {
                             .signInWithFacebook();
 
                     if (newUser != null) {
-                      Navigator.push(
+                      Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomePage()),
+                            builder: (context) =>  NavBarPagesManager(
+                                selectedIndex: 0)),
+                            (Route<dynamic>route) => false,
+
                       );
                     }
                   } on FirebaseAuthException catch (e) {

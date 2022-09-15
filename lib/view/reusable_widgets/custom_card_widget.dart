@@ -52,7 +52,19 @@ class CustomCardState extends State<CustomCard> {
                   SizedBox(
                     width:130 ,
                     height:123 ,
-                    child: Image.network(widget.imageName, alignment: Alignment.center,),
+                    child: Image.network(widget.imageName, alignment: Alignment.center,
+                        errorBuilder:(context, error, stacktrace){
+                      return const Icon(FontAwesomeIcons.image, size: 50,);
+                        } ,
+                        loadingBuilder: (context, child, loadingProgress){
+                          if(loadingProgress==null){
+                            return child;
+                          }
+                          return const Center(child: Text('Loading...'),);
+
+
+                        }
+                    ),
 
                   ),
 

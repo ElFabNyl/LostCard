@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:lostcard/constant/custom_color.dart';
-class CustomRewardsHistoryCard extends StatefulWidget {
+class CustomRewardsHistoryCard extends StatelessWidget {
 
-  final String rewardNumber;
-  final String amount;
-  final String number;
-  final String requestId;
+
+  final String location;
+  final String rewardId;
   final String dateTime;
+  final String cardColor;
+
 
   const CustomRewardsHistoryCard({
     Key? key,
-    required this.rewardNumber,
-    required this.amount,
-    required this.number,
-    required this.requestId,
-    required this.dateTime
+
+    required this.location,
+    required this.rewardId,
+    required this.dateTime,
+    required this.cardColor,
 
   }) : super(key: key);
 
-  @override
-  CustomRewardsHistoryCardState createState() => CustomRewardsHistoryCardState();
-}
 
-class CustomRewardsHistoryCardState extends State<CustomRewardsHistoryCard> {
   @override
   Widget build(BuildContext context) {
 
@@ -47,7 +44,7 @@ class CustomRewardsHistoryCardState extends State<CustomRewardsHistoryCard> {
                 //
                 //   ],
                 //border: Border.fromBorderSide(BorderSide()),
-                  color: Colors.white,
+                  color: cardColor.compareTo('Complete')==0? Colors.white:const Color(0xffC3B9DF),
                   borderRadius: BorderRadius.circular(12)),
 
 
@@ -58,7 +55,7 @@ class CustomRewardsHistoryCardState extends State<CustomRewardsHistoryCard> {
 
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Reward'+widget.rewardNumber, style:  TextStyle(
+                          child: Text('Reward', style:  TextStyle(
                               color: CustomColor.primaryColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 16
@@ -73,8 +70,8 @@ class CustomRewardsHistoryCardState extends State<CustomRewardsHistoryCard> {
                           alignment: Alignment.centerLeft,
                             child: RichText(
                               text: TextSpan(
-                                  text: 'A Deposit of '+widget.amount+' was made on your number '+widget.number+
-                                      ' as reward for finding document attached to request id: '+ widget.requestId,
+                                  text: 'Get to  '+location+' with the reward code  '+rewardId+
+                                      ' to deliver the found document and get your reward ',
                                   style: const TextStyle(
                                       color: Color(0xFF303030),
                                       fontSize: 14
@@ -90,7 +87,7 @@ class CustomRewardsHistoryCardState extends State<CustomRewardsHistoryCard> {
 
                         Align(
                           alignment: Alignment.centerRight,
-                          child: Text(widget.dateTime, style:  const TextStyle(
+                          child: Text(dateTime, style:  const TextStyle(
                               color: Color(0xff868686),
                               fontWeight: FontWeight.bold,
                               fontSize: 12

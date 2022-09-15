@@ -46,7 +46,7 @@ class FoundNotificationDialogState extends State<FoundNotificationDialog> {
                const SizedBox(height: 20,),
 
                
-               const Text('Successful Operation', style: TextStyle(fontSize: 24),),
+               const Text('Successful Operation', style: TextStyle(fontSize: 20),),
             const SizedBox(height: 20,),
                
                const Text('Pending verification', style: TextStyle(fontSize: 14, color: Color(0xff49454F)),),

@@ -30,10 +30,11 @@ class OnboardingPageSearching extends StatelessWidget {
                       backgroundColor: CustomColor.primaryColor,
                       textAlignment: TextAlign.end,
                       onPressed: () {
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const SignIn()),
+                              (Route<dynamic>route) => false,
                         );
                       },
                     ),
@@ -68,10 +69,13 @@ class OnboardingPageSearching extends StatelessWidget {
               const SizedBox(
                 height: 40,
               ),
-              const Align(
-                alignment: Alignment.bottomRight,
-                child: Image(
-                  image: AssetImage('assets/images/file_searching.png'),
+              const SizedBox(
+                height: 250,
+                child:  Align(
+                  alignment: Alignment.bottomRight,
+                  child: Image(
+                    image: AssetImage('assets/images/file_searching.png'),
+                  ),
                 ),
               ),
               const SizedBox(

@@ -46,6 +46,10 @@ dependencies:
 
   path: ^1.8.1
 
+  shared_preferences: ^2.0.15
+
+
+
 
 
 

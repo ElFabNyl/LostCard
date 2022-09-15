@@ -7,6 +7,7 @@ class DocumentModel {
   String documentType;
   String registrationDate;
   String documentState;
+  String transactionStatus;
 
   DocumentModel({
     required this.idUser,
@@ -17,6 +18,8 @@ class DocumentModel {
     required this.documentType,
     required this.registrationDate,
     required this.documentState,
+    required this.transactionStatus
+
   });
 
   Map<String, dynamic> toJson() {
@@ -29,6 +32,7 @@ class DocumentModel {
       'documentType': documentType,
       'registrationDate': registrationDate,
       'documentState': documentState,
+      'transactionStatus': transactionStatus,
     };
   }
 
@@ -42,6 +46,7 @@ class DocumentModel {
         documentType: json['documentType'],
         registrationDate: json['registrationDate'],
         documentState: json['documentState'],
+      transactionStatus: json['transactionStatus'],
 
     );
   }

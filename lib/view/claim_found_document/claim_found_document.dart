@@ -5,9 +5,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lostcard/controllers/claim_found_document_controller.dart';
-import 'package:lostcard/model/claim_found_document_model.dart';
-import 'package:lostcard/view/register_found_document_page/photo_uploaded_widget.dart';
+import 'package:lostcard/controllers/claim_document_controller.dart';
+import 'package:lostcard/model/claim_document_model.dart';
+import 'package:lostcard/view/reusable_widgets/photo_uploaded_widget.dart';
 import 'package:lostcard/view/reusable_widgets/choose_upload_medium_dialog.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 import 'package:lostcard/view/reusable_widgets/loading_indicator.dart';
@@ -47,6 +47,8 @@ class ClaimFoundDocumentState extends State<ClaimFoundDocument> {
 
   int i = 0;
 
+  bool isFloatingActionButtonTapped = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +83,7 @@ class ClaimFoundDocumentState extends State<ClaimFoundDocument> {
                                 var count = 0;
                                 setState(
                                       () {
+                                        isFloatingActionButtonTapped = true;
                                     while (count < documentSelected.length) {
                                       abc.add(DocumentUploadedWidget(
                                           onPressed: () {
@@ -117,6 +120,7 @@ class ClaimFoundDocumentState extends State<ClaimFoundDocument> {
                                     .getImageByCamera();
                                 setState(
                                       () {
+                                        isFloatingActionButtonTapped = true;
                                     if (image != null) {
                                       isLogoVisible = false;
                                       abc.add(PhotoUploadedWidget(
@@ -154,6 +158,7 @@ class ClaimFoundDocumentState extends State<ClaimFoundDocument> {
 
                                 setState(
                                       () {
+                                        isFloatingActionButtonTapped = true;
                                     if (imageSelectedFromGallery != null) {
                                       while (count <
                                           imageSelectedFromGallery!.length) {
@@ -201,7 +206,7 @@ class ClaimFoundDocumentState extends State<ClaimFoundDocument> {
           ],
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
+          //child: SingleChildScrollView(
             child: Column(
               children: [
                 AppPartContainer(
@@ -224,157 +229,166 @@ class ClaimFoundDocumentState extends State<ClaimFoundDocument> {
                 ),
                 Container(
                   padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 350,
-                        child: GridView.count(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 4.0,
-                            mainAxisSpacing: 8.0,
-                            children: List.generate(abc.length, (index) {
-                              return Center(
-                                child: GestureDetector(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        isFloatingActionButtonTapped?SizedBox(
+                          height: MediaQuery.of(context).size.height-MediaQuery.of(context).size.height*0.72,
+                          child: Scrollbar(
+                            child: GridView.count(
 
-                                  child: abc[index],
-                                  onTap: () {
-                                    setState(() {
-                                      i = index;
-                                      //print(i);
-                                      abc.removeAt(i);
-                                      listOfAuthenticationFiles.removeAt(i);
-                                    });
-                                  },
-                                ),
-                              );
-                            })),
-                      ),
+                                crossAxisCount: 2,
 
-                      //const SizedBox(height: 30,),
+                                crossAxisSpacing: 4.0,
+                                mainAxisSpacing: 8.0,
+                                children: List.generate(abc.length, (index) {
+                                  return Center(
+                                    child: GestureDetector(
 
-                      Visibility(
-                        visible: isLogoVisible,
-                        child: const SizedBox(
-                          height: 30,
-                          child: Image(
-                            image: AssetImage('assets/images/small_logo.png'),
+                                      child: abc[index],
+                                      onTap: () {
+                                        setState(() {
+                                          i = index;
+                                          //print(i);
+                                          abc.removeAt(i);
+                                          listOfAuthenticationFiles.removeAt(i);
+                                        });
+                                      },
+                                    ),
+                                  );
+                                })),
+                          ),
+                        ):SizedBox(
+                            height: MediaQuery.of(context).size.height-MediaQuery.of(context).size.height*0.57,
+                        ),
+
+                        //const SizedBox(height: 30,),
+
+                        Visibility(
+                          visible: isLogoVisible,
+                          child: const SizedBox(
+                            height: 30,
+                            child: Image(
+                              image: AssetImage('assets/images/small_logo.png'),
+                            ),
                           ),
                         ),
-                      ),
 
-                      const SizedBox(
-                        height: 10,
-                      ),
+                        const SizedBox(
+                          height: 10,
+                        ),
 
-                      const Text(
-                        'Verification Proofs',
-                        style:
-                        TextStyle(fontSize: 14, color: Color(0xFF49454F)),
-                      ),
+                        const Text(
+                          'Verification Proofs',
+                          style:
+                          TextStyle(fontSize: 14, color: Color(0xFF49454F)),
+                        ),
 
-                      const SizedBox(
-                        height: 10,
-                      ),
+                        const SizedBox(
+                          height: 10,
+                        ),
 
-                      const Text(
-                        'Please upload documents that can authenticate you are the owner of the claimed document',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 14),
-                      ),
+                        const Text(
+                          'Please upload documents that can authenticate you are the owner of the claimed document',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 14),
+                        ),
 
-                      const SizedBox(
-                        height: 100,
-                      ),
+                        const SizedBox(
+                          height: 100,
+                        ),
 
-                      CustomizedTextButton(
-                        text: 'Submit',
-                        buttonWidth: 160,
-                        buttonHeight: 40,
-                        border: 'border',
-                        textColor: Colors.white,
-                        textFontSize: 14,
-                        backgroundColor: CustomColor.primaryColor,
-                        onPressed: () async {
-                          LoadingIndicator(context).startLoading();
-                           var i = 0;
-                           var url;
+                        CustomizedTextButton(
+                          text: 'Submit',
+                          buttonWidth: 160,
+                          buttonHeight: 40,
+                          border: 'border',
+                          textColor: Colors.white,
+                          textFontSize: 14,
+                          backgroundColor: CustomColor.primaryColor,
+                          onPressed: () async {
+                            LoadingIndicator(context).startLoading();
+                             var i = 0;
+                             var url;
 
 
-                           List<String>list = [];
-                           print('listOfAuthenticationFiles.length: '+ listOfAuthenticationFiles.length.toString());
-                           while(i<listOfAuthenticationFiles.length){
-                             if(extension(listOfAuthenticationFiles[i].path).compareTo('.pdf')<0||extension(listOfAuthenticationFiles[i].path).compareTo('.doc')<0){
-                               final ref = FirebaseStorage.instance.ref().child("authenticationFiles").child("claimFound"+i.toString()+FirebaseAuth.instance.currentUser!.uid+' '+widget.idDocument+".jpg");
-                               await ref.putFile(listOfAuthenticationFiles[i]);
-                               url = await ref.getDownloadURL();
-                               list.add(url);
-                             }
-                             else{
-
-                               if(extension(listOfAuthenticationFiles[i].path).compareTo('.doc')<0){
-                                 final ref = FirebaseStorage.instance.ref().child("authenticationFiles").child("claimFound"+FirebaseAuth.instance.currentUser!.uid+' '+widget.idDocument+".pdf");
+                             List<String>list = [];
+                             print('listOfAuthenticationFiles.length: '+ listOfAuthenticationFiles.length.toString());
+                             while(i<listOfAuthenticationFiles.length){
+                               if(extension(listOfAuthenticationFiles[i].path).compareTo('.pdf')<0||extension(listOfAuthenticationFiles[i].path).compareTo('.doc')<0){
+                                 final ref = FirebaseStorage.instance.ref().child("claimedFoundDocumentsAuthenticationFiles").child("claimFound"+i.toString()+FirebaseAuth.instance.currentUser!.uid+' '+widget.idDocument+".jpg");
                                  await ref.putFile(listOfAuthenticationFiles[i]);
                                  url = await ref.getDownloadURL();
                                  list.add(url);
-
                                }
                                else{
-                             final ref = FirebaseStorage.instance.ref().child("foundDocumentAuthenticationFiles").child("claimFound"+FirebaseAuth.instance.currentUser!.uid+' '+widget.idDocument+".doc");
-                             await ref.putFile(listOfAuthenticationFiles[i]);
-                             url = await ref.getDownloadURL();
-                             list.add(url);
+
+                                 if(extension(listOfAuthenticationFiles[i].path).compareTo('.doc')<0){
+                                   final ref = FirebaseStorage.instance.ref().child("claimedFoundDocumentsAuthenticationFiles").child("claimFound"+FirebaseAuth.instance.currentUser!.uid+' '+widget.idDocument+".pdf");
+                                   await ref.putFile(listOfAuthenticationFiles[i]);
+                                   url = await ref.getDownloadURL();
+                                   list.add(url);
+
+                                 }
+                                 else{
+                               final ref = FirebaseStorage.instance.ref().child("claimedFoundDocumentsAuthenticationFiles").child("claimFound"+FirebaseAuth.instance.currentUser!.uid+' '+widget.idDocument+".doc");
+                               await ref.putFile(listOfAuthenticationFiles[i]);
+                               url = await ref.getDownloadURL();
+                               list.add(url);
+
+                               }
+                               }
+
+                               i++;
 
                              }
-                             }
-
-                             i++;
-
-                           }
 
 
-                          ClaimFoundDocumentModel claimFoundDocumentModel = ClaimFoundDocumentModel(
-                              idUser: FirebaseAuth.instance.currentUser!.uid,
-                              idFoundDocument: widget.idDocument,
-                              listOfAuthenticationFiles: list,
-                              idClaimFoundDocument: '',);
+                            ClaimDocumentModel claimDocumentModel = ClaimDocumentModel(
+                                idUser: FirebaseAuth.instance.currentUser!.uid,
+                                idDocument: widget.idDocument,
+                                listOfAuthenticationFiles: list,
+                                idClaimDocument: '',
+                              documentState: 'Found Document',);
 
 
 
-                          await ClaimFoundDocumentController().addClaimedFoundDocument(claimFoundDocumentModel);
+                            await ClaimDocumentController().addClaimedDocument(claimDocumentModel);
 
-                          LoadingIndicator(context).stopLoading();
+                            LoadingIndicator(context).stopLoading();
 
 
 
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return FoundNotificationDialog(
-                                  message: 'Please bring the document to Messassi ICT university'
-                                      ' along with the reward code we will send to you now through sms in order to claim your reward',
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              NavBarPagesManager(
-                                                  selectedIndex: 0)),
-                                    );
-                                  },
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return FoundNotificationDialog(
+                                    message: 'Please bring the document to Messassi ICT university'
+                                        ' along with the reward code we will send to you now through sms in order to claim your reward',
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                NavBarPagesManager(
+                                                    selectedIndex: 0)),
+                                      );
+                                    },
 
-                                );
-                              });
-                        },
+                                  );
+                                });
+                          },
 
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
 
                 ),
               ],
             ),
-          ),
+          //),
         ));
   }
 }

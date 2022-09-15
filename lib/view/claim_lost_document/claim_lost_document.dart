@@ -7,14 +7,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lostcard/view/register_found_document_page/photo_uploaded_widget.dart';
+import 'package:lostcard/view/reusable_widgets/photo_uploaded_widget.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
 import '../../constant/custom_color.dart';
-import '../../controllers/claim_lost_document_controller.dart';
-import '../../model/claim_lost_document_model.dart';
+import '../../controllers/claim_document_controller.dart';
+import '../../model/claim_document_model.dart';
 import '../../utils/manage_image_and_file.dart';
 import '../nav_bar_pages_manager/bottom_nav_bar_pages_manager.dart';
-import '../register_found_document_page/photo_not_uploaded_widget.dart';
+import '../reusable_widgets/photo_not_uploaded_widget.dart';
 import '../reusable_widgets/app_part_container.dart';
 import '../reusable_widgets/custom_found_notification_dialog.dart';
 import '../reusable_widgets/loading_indicator.dart';
@@ -281,16 +281,17 @@ class ClaimLostDocumentState extends State<ClaimLostDocument> {
                             // await ref2.putFile(documentRecto!);
                             // documentRectoImageUrl =  await ref2.getDownloadURL() ;
 
-                            ClaimLostDocumentModel claimLostDocumentModel = ClaimLostDocumentModel(
+                            ClaimDocumentModel claimDocumentModel = ClaimDocumentModel(
                               idUser: FirebaseAuth.instance.currentUser!.uid,
-                              idLostDocument: widget.idDocument,
+                              idDocument: widget.idDocument,
                               listOfAuthenticationFiles: finalList,
-                              idClaimLostDocument: '',);
+                              idClaimDocument: '',
+                                documentState: 'Lost Document');
 
 
 
-                            await ClaimLostDocumentController()
-                                .addClaimedLostDocument(claimLostDocumentModel);
+                            await ClaimDocumentController()
+                                .addClaimedDocument(claimDocumentModel);
 
 
 

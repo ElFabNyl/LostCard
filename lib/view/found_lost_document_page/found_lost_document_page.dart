@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lostcard/constant/custom_color.dart';
 import 'package:lostcard/view/claim_found_document/claim_found_document.dart';
 import 'package:lostcard/view/reusable_widgets/customized_text_button.dart';
@@ -77,7 +78,6 @@ class FoundLostDocumentPageState extends State<FoundLostDocumentPage> {
                   height: 255,
                   color: const Color(0xFFFFE3F4),
                   child:  CarouselSlider(
-
                     items: widget.imageList.map((imgUrl) {
                       return Builder(
                         builder: (BuildContext context) {
@@ -89,6 +89,17 @@ class FoundLostDocumentPageState extends State<FoundLostDocumentPage> {
                             ),
                             child: Image.network(
                               imgUrl,
+                              errorBuilder:(context, error, stacktrace){
+                                return const Icon(FontAwesomeIcons.image, size: 50,);
+                              } ,
+                              loadingBuilder: (context, child, loadingProgress){
+                                if(loadingProgress==null){
+                                  return child;
+                                }
+                                return const Center(child: Text('Loading...'),);
+
+
+                              },
                               fit: BoxFit.fill,
                             ),
                           );
